@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar"><div><h2>PR–PO NLP Verification</h2><p class="muted">The trained AI compares the approved PR requirements with the approved PO items.</p></div><a class="btn" href="{{url_for('nlp_algorithms')}}">Model Information</a></div>
+<div class="card model-status-card">
+  <div><h3>Installed FastText V2 Model</h3><p class="muted">Runtime decisions are AI-only. No rule, similarity threshold, hybrid override, or fallback changes the predicted class.</p></div>
+  <span class="badge {{'ok' if model_state.active else 'bad'}}">{{'ACTIVE' if model_state.active else 'NOT INSTALLED'}}</span>
+  <p class="muted full-row">{{model_state.message}}</p>
+  {% if not model_state.active %}<div class="warning-box full-row"><b>NLP is unavailable, but the process through PO still works.</b><p>Copy your verified <code>model\fasttext_nlp</code> folder into this system or run <code>python install_colab_model_V2.py FASTTEXT_NLP_MODEL_AI_ONLY.zip</code>.</p></div>{% endif %}
+</div>
+<div class="card" style="margin-top:16px">
+  <div class="step-title"><span>6</span><div><h3>Run Verification on an Approved PO</h3><p class="muted">Each approved PO can be verified once.</p></div></div>
+  <form method="post" class="filters" data-confirm="Run the trained FastText model on this PR–PO pair?">
+    <select name="po_id" required {{'disabled' if not model_state.active else ''}}><option value="">Select approved PR–PO pair</option>{% for p in pos %}<option value="{{p.id}}">PR {{p.pr_no}} ⇄ PO {{p.no}} — AOQ {{p.aoq_no}} — {{p.supplier}} — {{p.item_preview or 'Item'}}</option>{% endfor %}</select>
+    <button class="btn primary" type="submit" {{'disabled' if not model_state.active else ''}}>Run AI NLP Verification</button>
+  </form>
+  {% if not pos %}<p class="muted">No approved PO is waiting for verification.</p>{% endif %}
+</div>
+<div class="card" style="margin-top:16px">
+  <h3>Verification Records</h3>
+  <div class="table-scroll"><table class="table"><tr><th>NLP</th><th>Compared Documents</th><th>Supplier</th><th>AI Result</th><th>Confidence</th><th>Primary Finding</th><th>Status</th><th>Action</th></tr>
+  {% for r in rows %}<tr><td><span class="id-chip">{{r.no or r.id}}</span><br><span class="muted">{{r.created_at}}</span></td><td><b>PR {{r.pr_no}}</b><br><span class="muted">AOQ {{r.aoq_no}} → PO {{r.po_no}}</span></td><td>{{r.supplier}}</td><td><span class="badge {{'ok' if r.result=='Acceptable' else 'warn' if r.result in ['Needs Review','Needs Recanvass'] else 'bad'}}">{{r.result}}</span></td><td>{{r.confidence}}%</td><td>{{r.findings}}</td><td><span class="badge {{'ok' if r.status=='Approved' else 'warn'}}">{{r.status or 'For Review'}}</span></td><td><a class="btn {{'primary' if r.status!='Approved' else 'blue'}} small" href="{{url_for('nlp_review',id=r.id)}}">{{'Review & Approve' if r.status!='Approved' else 'View Result'}}</a></td></tr>{% else %}<tr><td colspan="8" class="center muted">No NLP records yet.</td></tr>{% endfor %}
+  </table></div>
+</div>
+{% endblock %}

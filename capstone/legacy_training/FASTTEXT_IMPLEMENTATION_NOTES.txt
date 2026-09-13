@@ -1,0 +1,35 @@
+AI-ONLY FASTTEXT IMPLEMENTATION
+
+Active runtime assets
+- model/fasttext_model.model
+- model/nlp_discrepancy_model.pkl
+- model/nlp_method.json
+
+Active architecture
+- COA-domain FastText embeddings
+- Pair-aware representation: PR vector, PO vector, absolute difference, element-wise product
+- Eight generic pair-comparison input features
+- Direct four-class trained status classifier
+- Separate trained primary-issue classifier
+
+Runtime result
+The trained status classifier directly predicts:
+- Acceptable
+- Needs Review
+- Needs Recanvass
+- Reject
+
+The trained issue classifier predicts the primary discrepancy type.
+There is no 20%/80% score, rule override, manual threshold conversion, or fallback result.
+If the model fails to load, verification stops.
+
+Historical model-selection notebook
+The earlier notebook compared TF-IDF, FastText, and DistilBERT on a much smaller dataset and
+selected FastText by weighted F1. That experiment remains research history. The current deployed
+model was retrained after adding the dynamic COA-derived four-class dataset, so current metrics
+must be read from model/nlp_method.json.
+
+Accuracy warning
+The COA-derived PR–PO pairs are controlled synthetic examples because the workbook has no real
+PR–PO outcome labels. Current held-out results must not be described as guaranteed accuracy on
+all real municipal documents.

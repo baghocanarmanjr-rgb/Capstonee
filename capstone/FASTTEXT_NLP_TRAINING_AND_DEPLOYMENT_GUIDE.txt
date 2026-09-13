@@ -1,0 +1,81 @@
+FASTTEXT NLP TRAINING AND DEPLOYMENT GUIDE
+=========================================
+
+PURPOSE
+-------
+This build preserves the June manuscript methodology:
+1. TF-IDF + Logistic Regression
+2. FastText embeddings + Logistic Regression
+3. Frozen DistilBERT embeddings + Logistic Regression
+
+FastText remains the selected deployment approach from the June model-selection
+phase. The new Google Colab code expands its training and reevaluates all three
+approaches using the same group-held-out records.
+
+IMPORTANT HONESTY NOTE
+----------------------
+The Colab comparison records the predictive leader of the current run. The
+system still exports FastText because the June selection is being preserved and
+the current task is an enhancement/retraining of the already selected model.
+Do not state that FastText achieved the highest current metric unless the
+comparison table actually shows that result.
+
+AI-ONLY RUNTIME
+---------------
+The offline system loads only:
+- fasttext_model.model
+- status_classifier.joblib
+- issue_classifier.joblib
+- labels.json
+- training_manifest.json
+
+The trained status classifier directly predicts:
+- Acceptable
+- Needs Review
+- Needs Recanvass
+- Reject
+
+The trained issue classifier directly predicts the primary discrepancy issue.
+No hardcoded discrepancy rule, similarity threshold, weighted hybrid score,
+TF-IDF fallback, DistilBERT fallback, or manual result override is used.
+
+TRAIN IN GOOGLE COLAB
+---------------------
+1. Create a blank Colab notebook.
+2. Select a GPU runtime.
+3. Open Google_Colab_Train_3_NLP_Deploy_FastText.py as text.
+4. Copy each section marked CELL into a separate Colab code cell.
+5. Upload data/for-coa.xlsx.
+6. Optionally upload training/validated_pr_po_pairs_template.csv or a larger
+   staff-validated CSV with columns:
+   pr_text, po_text, status, issue, group_id
+7. Run all cells in order.
+8. Download FASTTEXT_NLP_MODEL_AI_ONLY.zip.
+
+INSTALL LOCALLY
+---------------
+Place the downloaded ZIP in the capstone folder and run:
+
+  python install_colab_model.py FASTTEXT_NLP_MODEL_AI_ONLY.zip
+
+Restart the application. The NLP page will show the model as Active, and the
+AI Model Information page will display the three-model comparison stored in the
+manifest.
+
+MODEL PACKAGE LOCATION
+----------------------
+model/fasttext_nlp/
+  fasttext_model.model
+  fasttext_model.model.*     (possible Gensim sidecar arrays)
+  status_classifier.joblib
+  issue_classifier.joblib
+  labels.json
+  training_manifest.json
+  model_comparison.csv
+
+SYSTEM FEATURES PRESERVED
+-------------------------
+The flexible AOQ uploader, approval review pages, document identifiers,
+PPMP/APP/PR/AOQ/PO/IAR/Inventory/RIS/ICS flow, audit trail, and local SQLite
+storage are unchanged. Only DeBERTa/transformer-specific NLP integration was
+replaced by the enhanced FastText integration.

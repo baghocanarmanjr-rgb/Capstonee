@@ -1,0 +1,24 @@
+AOQ OCR SETUP FOR WINDOWS
+
+The Python package pytesseract connects the system to the Tesseract OCR application. Installing requirements.txt alone does not install the Tesseract application.
+
+1. Install Tesseract OCR for Windows.
+2. Keep the default installation folder when possible:
+   C:\Program Files\Tesseract-OCR\tesseract.exe
+3. Run run.bat again.
+
+The system automatically checks these locations:
+- C:\Program Files\Tesseract-OCR\tesseract.exe
+- C:\Program Files (x86)\Tesseract-OCR\tesseract.exe
+
+For a different location, set an environment variable before starting:
+set TESSERACT_CMD=C:\Your\Folder\tesseract.exe
+python app.py
+
+Digital PDFs containing selectable text can be read even without Tesseract. Image files and scanned PDFs require Tesseract.
+
+FLEXIBLE AOQ FORMATS
+--------------------
+Tesseract is required only for scanned PDFs and image files. Digital PDFs,
+DOCX, XLSX/XLSM, CSV, and TXT files are read directly by their local parsers.
+The AOQ layout may vary; all detected fields and tables are shown for review.

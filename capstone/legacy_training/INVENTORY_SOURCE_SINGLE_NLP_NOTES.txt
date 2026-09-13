@@ -1,0 +1,7 @@
+CORRECTED PURPOSE
+
+1. Inventory workbook/data is the source of items.
+2. Selected inventory items are passed to DBM, NON-DBM, or LIB and continue through the existing PPMP flow.
+3. Inventory, dataset import, PPMP, and IAR do not calculate anomaly scores.
+4. The system performs one trained anomaly/discrepancy check only: PR–PO NLP Verification.
+5. FastText + Logistic Regression compares PR descriptions/specifications with the corresponding PO descriptions/specifications.

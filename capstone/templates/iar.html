@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar"><div><h2>Inspection and Acceptance Report (IAR / AIR)</h2><p class="muted">Create an IAR only after the linked NLP result is approved as Acceptable or Needs Review.</p></div></div>
+<div class="card">
+  <div class="step-title"><span>7</span><div><h3>Create IAR from an Eligible PO</h3><p class="muted">IAR approval accepts delivery and adds items to live Inventory.</p></div></div>
+  <form method="post" class="filters" data-confirm="Create an IAR for this approved procurement chain?">
+    <select name="po_id" required><option value="">Select eligible PO</option>{% for p in pos %}<option value="{{p.id}}">PR {{p.pr_no}} → NLP {{p.nlp_no}} ({{p.nlp_result}}) → PO {{p.no}} — {{p.supplier}} — {{p.item_preview or 'Item'}}</option>{% endfor %}</select>
+    <button class="btn primary" type="submit">Create IAR</button>
+  </form>
+  {% if not pos %}<p class="muted">No PO with an approved Acceptable or Needs Review NLP result is available.</p>{% endif %}
+</div>
+<div class="card" style="margin-top:16px"><h3>IAR Records</h3><div class="table-scroll"><table class="table"><tr><th>IAR</th><th>Linked Chain</th><th>Supplier</th><th>Date</th><th>Status</th><th>Actions</th></tr>
+{% for r in rows %}<tr><td><span class="id-chip">{{r.no}}</span></td><td><b>PR {{r.pr_no or '—'}}</b><br><span class="muted">NLP {{r.nlp_no or '—'}} → PO {{r.po_no}}</span></td><td>{{r.supplier}}</td><td>{{r.created_at}}</td><td><span class="badge {{'ok' if r.status=='Approved' else 'warn'}}">{{r.status}}</span></td><td class="actions"><a class="btn {{'primary' if r.status!='Approved' else 'blue'}} small" href="{{url_for('iar_review',id=r.id)}}">{{'Review Delivery & Approve' if r.status!='Approved' else 'View Approved IAR'}}</a><a class="btn small" href="{{url_for('iar_print',id=r.id)}}">Print</a></td></tr>{% else %}<tr><td colspan="6" class="center muted">No IAR records yet.</td></tr>{% endfor %}
+</table></div></div>
+{% endblock %}

@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login - Enhance Supply Management</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-page">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="seal">MA</div>
+      <div>
+        <h1>Municipality of Asuncion</h1>
+        <p>Enhance Supply Management</p>
+      </div>
+    </div>
+    <h2>Admin Login</h2>
+    <p class="muted">Only the registered administrator account can access this system.</p>
+    {% with messages=get_flashed_messages() %}{% if messages %}{% for m in messages %}
+      <div class="notice">{{m}}</div>
+    {% endfor %}{% endif %}{% endwith %}
+    <form method="post" class="login-form">
+      <label>Username</label>
+      <input name="username" autocomplete="username" required autofocus>
+      <label>Password</label>
+      <input name="password" type="password" autocomplete="current-password" required>
+      <button class="btn primary login-btn" type="submit">Login</button>
+    </form>
+  </div>
+</body>
+</html>

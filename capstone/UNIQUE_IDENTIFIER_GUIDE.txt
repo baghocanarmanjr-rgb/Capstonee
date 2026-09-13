@@ -1,0 +1,49 @@
+UNIQUE IDENTIFIER AND CLEAR-ACTION GUIDE
+========================================
+
+Purpose
+-------
+Every record has a readable identifier, and every button/dropdown states the
+specific document or process that will be opened, generated, approved, or
+verified. This prevents users from choosing records by an internal database ID
+or by an unclear generic label.
+
+Identifier formats
+------------------
+SRC-INV-000001          Source item from the uploaded inventory workbook
+PPMP-DBM-2026-0001      DBM PPMP document
+PPMP-NONDBM-2026-0001   NON-DBM PPMP document
+PPMP-LIB-2026-0001      LIB PPMP document
+APP-2026-0001           Annual Procurement Plan record
+PR-2026-0001            Purchase Request
+AOQ-2026-0001           AOQ / approved bidding-result record
+PO-2026-0001            Purchase Order
+NLP-2026-0001           PR-PO NLP verification record
+IAR-2026-0001           Inspection and Acceptance Report
+INV-2026-00001          Received live-inventory item
+RIS-2026-0001           Requisition and Issue Slip
+ICS-2026-0001           Inventory Custodian Slip
+
+Each item also retains a document-level line ID, such as:
+PR-2026-0001-ITEM-01
+PO-2026-0001-ITEM-01
+
+Traceability chain
+------------------
+Source Item ID -> PPMP ID -> APP ID -> PR ID -> AOQ ID -> PO ID
+-> NLP Verification ID -> IAR ID -> Live Inventory Item ID -> RIS/ICS ID
+
+User-interface behavior
+-----------------------
+- Dropdown options show the identifier, linked source identifier, item,
+  supplier/office, and amount where applicable.
+- Buttons name the exact action and record, such as "Approve PO PO-2026-0001".
+- Approval and generation actions show a confirmation message before changes.
+- Tables show linked identifiers rather than unclear internal numeric IDs.
+- Source workbook items retain their sheet and source-row information.
+
+Implementation
+--------------
+Identifiers are generated through a persistent SQLite sequence table and are
+checked against the destination table before use. They do not rely on random
+numbers, so future records remain readable and collision-safe.

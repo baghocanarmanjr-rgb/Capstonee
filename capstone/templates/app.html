@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar"><div><h2>Annual Procurement Plan (APP)</h2><p class="muted">Choose a specific PPMP identifier. The selected PPMP, item, office, and amount are shown before you generate the APP.</p></div></div>
+<div class="card">
+  <h3>Create an APP from a PPMP</h3>
+  <form method="post" class="filters" data-confirm="Generate an APP from the selected PPMP?">
+    <select name="ppmp_id" required>
+      <option value="">Select the exact PPMP record</option>
+      {% for p in ppmps %}<option value="{{p.id}}">{{p.no}} — {{p.type}} — {{p.office}} — {{p.item_preview or 'Item not named'}} — {{p.total|money}}</option>{% endfor %}
+    </select>
+    <button class="btn primary" type="submit">Generate APP from Selected PPMP</button>
+  </form>
+  {% if not ppmps %}<p class="muted">No PPMP record is currently available for APP generation.</p>{% endif %}
+</div>
+<div class="card" style="margin-top:16px"><h3>APP Records</h3><div style="overflow:auto"><table class="table"><tr><th>APP Identifier</th><th>Source PPMP</th><th>Item Covered</th><th>Year / Office</th><th>Total</th><th>Status</th><th>Clear Actions</th></tr>{% for r in plans %}<tr><td><span class="id-chip">{{r.no}}</span></td><td><b>{{r.ppmp_no or ('PPMP record #' ~ r.ppmp_id)}}</b><br><span class="muted">{{r.ppmp_type or 'PPMP category not recorded'}}</span></td><td><b>{{r.item_count}}</b> item(s)<br><span class="muted">{{r.item_preview}}</span></td><td>{{r.year}}<br><span class="muted">{{r.office}}</span></td><td>{{r.total|money}}</td><td><span class="badge {{'ok' if r.status=='Approved' else 'warn'}}">{{r.status}}</span></td><td class="actions"><a class="btn {{'primary' if r.status!='Approved' else 'blue'}} small" href="/app/{{r.id}}/view">{{'Review All Items & Approve' if r.status!='Approved' else 'View Approved APP'}} {{r.no}}</a><a class="btn small" href="/app/{{r.id}}/print">Open / Print {{r.no}}</a></td></tr>{% else %}<tr><td colspan="7" class="center muted">No APP records yet.</td></tr>{% endfor %}</table></div></div>
+{% endblock %}

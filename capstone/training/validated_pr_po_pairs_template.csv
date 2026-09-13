@@ -1,0 +1,21 @@
+pr_text,po_text,status,issue,group_id,source
+Laptop computer; memory at least 8 GB RAM; storage minimum 512 GB SSD,Notebook PC with 16 GB system memory and 1 TB solid-state drive,Acceptable,Requirement satisfied,challenge-minimum-ram-ssd,staff_validated
+Laptop computer; minimum 8 GB RAM,Laptop computer with 4 GB memory,Needs Recanvass,Below minimum,challenge-minimum-ram-low,staff_validated
+Laptop computer; minimum 512 GB SSD,Laptop computer with 512 GB storage,Needs Review,Missing or ambiguous information,challenge-ssd-ambiguous,staff_validated
+Laptop computer; minimum 512 GB solid-state drive,Laptop computer with 512 GB SSD,Acceptable,Requirement satisfied,challenge-ssd-synonym,staff_validated
+Laptop computer; minimum 512 GB SSD,Laptop computer with 1 TB hard disk drive,Needs Recanvass,Specification mismatch,challenge-ssd-hdd,staff_validated
+Equipment weight must not exceed 5 kg,Equipment weight is 4.5 kilograms,Acceptable,Requirement satisfied,challenge-maximum-weight,staff_validated
+Equipment weight must not exceed 5 kg,Equipment weight is 7 kg,Needs Recanvass,Above maximum,challenge-maximum-weight-high,staff_validated
+Display size from 14 to 16 inches,15.6-inch screen,Acceptable,Requirement satisfied,challenge-range-display,staff_validated
+Display size from 14 to 16 inches,17-inch monitor,Needs Recanvass,Exact or range mismatch,challenge-range-display-high,staff_validated
+Exactly 4 network ports required,Network switch with four Ethernet ports,Acceptable,Requirement satisfied,challenge-exact-ports,staff_validated
+Exactly 4 network ports required,Network switch with eight Ethernet ports,Needs Recanvass,Exact or range mismatch,challenge-exact-ports-high,staff_validated
+Processor: Intel Core i5 or equivalent,AMD Ryzen 5 processor,Needs Review,Missing or ambiguous information,challenge-equivalent-cpu,staff_validated
+Processor: Intel Core i5,Office chair with armrest,Reject,Different item,challenge-different-item,staff_validated
+"Printer ink T663 magenta, 2 bottles","T663 magenta ink, two btls",Acceptable,Requirement satisfied,challenge-abbreviation,staff_validated
+"Printer ink T663 magenta, 2 bottles","T664 yellow ink, two bottles",Reject,Different item,challenge-ink-model,staff_validated
+Warranty of at least 3 years,Five-year warranty included,Acceptable,Requirement satisfied,challenge-warranty-min,staff_validated
+Power consumption maximum 100 W,Rated power consumption 120 watts,Needs Recanvass,Above maximum,challenge-power-max,staff_validated
+Waterproof rating IP67 or better,IP68 ingress protection,Acceptable,Requirement satisfied,challenge-rating,staff_validated
+Capacity: 10 liters minimum,Ten litre capacity,Acceptable,Requirement satisfied,challenge-unit-spelling,staff_validated
+Capacity: 10 liters minimum,Capacity not stated,Needs Review,Missing or ambiguous information,challenge-missing-value,staff_validated

@@ -1,0 +1,17 @@
+COMPLETE START-TO-END SYSTEM PACKAGE
+
+Main installer:
+INSTALL_COMPLETE_SYSTEM.ps1
+
+Complete application folder:
+capstone\
+
+Installation guide:
+HOW_TO_INSTALL.txt
+
+Connected workflow:
+PPMP -> APP -> PR -> AOQ -> PO -> PR-PO NLP -> IAR/AIR -> Inventory -> RIS/ICS
+
+The installer migrates a compatible active V2 model from the existing system when found.
+The uploaded base did not contain the trained V2 model assets, so no fabricated weights are bundled.
+The system works through approved PO without the NLP model.

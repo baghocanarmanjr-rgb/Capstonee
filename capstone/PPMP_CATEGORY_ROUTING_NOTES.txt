@@ -1,0 +1,3 @@
+INVENTORY TO PPMP CATEGORY ROUTING
+
+Select one or more inventory-source records, enter request quantity and estimated unit cost, then choose Pass to DBM, Pass to NON-DBM, or Pass to LIB. The records appear in that PPMP worksheet for review before Generate PPMP. Inventory is only an item source; anomaly/discrepancy detection occurs once in PR–PO NLP Verification.

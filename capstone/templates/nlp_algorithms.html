@@ -1,0 +1,29 @@
+{% extends 'base.html' %}{% block content %}
+<div class="toolbar"><div><h2>Three-Approach NLP Comparison</h2><p class="muted">The June methodology is preserved: TF-IDF, FastText, and frozen DistilBERT embeddings are evaluated on the same group-held-out PR–PO dataset. FastText remains the selected deployment model and directly controls the runtime status and issue predictions.</p></div><a class="btn primary" href="/nlp">Back to PR–PO NLP Verification</a></div>
+<div class="grid three">
+  {% for a in algorithms %}
+  <div class="card algo-card">
+    <div class="algo-icon">{{ loop.index }}</div>
+    <h3>{{ a.name }}</h3>
+    <p><b>{{ a.type }}</b></p>
+    <p class="muted">{{ a.notes }}</p>
+    <div class="mini-row"><span>Role</span><b>{{ a.role }}</b></div>
+    <div class="mini-row"><span>Status</span><b>{{ a.status }}</b></div>
+    <div class="mini-row"><span>Recorded Metric</span><b>{{ a.accuracy }}</b></div>
+  </div>
+  {% endfor %}
+</div>
+<div class="card" style="margin-top:16px">
+  <h3>How the deployed FastText model controls verification</h3>
+  <table class="table">
+    <tr><th>Stage</th><th>AI-only behavior</th></tr>
+    <tr><td>Model-selection evidence</td><td>TF-IDF + Logistic Regression, FastText + Logistic Regression, and frozen DistilBERT embeddings + Logistic Regression are trained and evaluated using the same group-held-out records. The comparison is retained in the installed model manifest.</td></tr>
+    <tr><td>Selected model</td><td>FastText is retained as the June-selected deployment approach. The current Colab code expands its training with semantic requirement wording, synonyms, minimum/maximum/exact/range relationships, OCR-like text, COA terminology, and optional validated staff pairs.</td></tr>
+    <tr><td>Model input</td><td>The approved PR and PO are serialized in natural language with item descriptions, specifications, quantities, units, and other meaningful fields. FastText produces separate PR and PO embeddings plus learned pair-comparison features.</td></tr>
+    <tr><td>Final decision</td><td>A trained FastText-based status classifier directly predicts <b>Acceptable</b>, <b>Needs Review</b>, <b>Needs Recanvass</b>, or <b>Reject</b>. No runtime rule changes that result.</td></tr>
+    <tr><td>Discrepancy explanation</td><td>A separately trained FastText-based issue classifier predicts the primary issue. No hardcoded issue selector or transformer fallback is used.</td></tr>
+    <tr><td>Failure behavior</td><td>If the trained FastText package cannot load, verification stops and creates no result.</td></tr>
+  </table>
+  <div class="alert warn" style="margin-top:12px"><b>Evaluation limitation:</b> Generated and COA-derived examples are controlled training data. Report the held-out per-class metrics and add real reviewed PR–PO outcomes for stronger external validation.</div>
+</div>
+{% endblock %}

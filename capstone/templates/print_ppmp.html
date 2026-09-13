@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+  <title>PPMP Print</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    @media print{.no-print{display:none}.print-page{border:0;max-width:none}.content{padding:0}}
+    .ppmp-title{font-size:18px;letter-spacing:.02em;margin:4px 0}
+    .ppmp-small{font-size:12px;margin:2px 0}
+    .print-table th,.print-table td{font-size:10px;padding:4px;vertical-align:middle;text-align:center}
+    .print-table td:nth-child(1),.print-table td:nth-child(3){text-align:left}
+  </style>
+</head>
+<body>
+<div class="content">
+  <div class="toolbar no-print">
+    <a class="btn" href="/ppmp">Back</a>
+    <button class="btn primary" onclick="window.print()">Print PPMP</button>
+  </div>
+
+  <div class="print-page">
+    <div class="print-head">
+      <p>[Agency Letterhead with Logo]</p>
+      <h1 class="ppmp-title">PROJECT PROCUREMENT MANAGEMENT PLAN (PPMP) NO. {{row.no}}</h1>
+      <p class="ppmp-small">INDICATIVE &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; FINAL</p>
+    </div>
+
+    <p class="ppmp-small"><b>Fiscal Year:</b> {{row.year}}</p>
+    <p class="ppmp-small"><b>End-User or Implementing Unit:</b> {{row.office}}</p>
+
+    <table class="print-table">
+      <tr>
+        <th colspan="4">PROCUREMENT PROJECT DETAILS</th>
+        <th colspan="4">PROJECTED TIMELINE (MM/YYYY)</th>
+        <th colspan="2">FUNDING DETAILS</th>
+        <th rowspan="2">ATTACHED SUPPORTING DOCUMENTS</th>
+        <th rowspan="2">REMARKS</th>
+      </tr>
+      <tr>
+        <th>General Description and Objective of the Project to be Procured</th>
+        <th>Type of the Project to be Procured</th>
+        <th>Quantity and Size of the Project to be Procured</th>
+        <th>Recommended Mode of Procurement</th>
+        <th>Pre-Procurement Conference, if applicable (Yes/No)</th>
+        <th>Start of Procurement Activity</th>
+        <th>End of Procurement Activity</th>
+        <th>Expected Delivery/Implementation Period</th>
+        <th>Source of Funds</th>
+        <th>Estimated Budget/Authorized Budgetary Allocation (Php)</th>
+      </tr>
+      <tr>
+        <th>Column 1</th><th>Column 2</th><th>Column 3</th><th>Column 4</th><th>Column 5</th><th>Column 6</th><th>Column 7</th><th>Column 8</th><th>Column 9</th><th>Column 10</th><th>Column 11</th><th>Column 12</th>
+      </tr>
+      {% for it in items %}
+      <tr>
+        <td>{{it.get('General Description and Objective of the Project to be Procured','')}}</td>
+        <td>{{it.get('Type of the Project to be Procured','')}}</td>
+        <td>{{it.get('Quantity and Size of the Project to be Procured','')}}</td>
+        <td>{{it.get('Recommended Mode of Procurement','')}}</td>
+        <td>{{it.get('Pre-Procurement Conference Applicable (Yes/No)','')}}</td>
+        <td>{{it.get('Start of Procurement Activity','')}}</td>
+        <td>{{it.get('End of Procurement Activity','')}}</td>
+        <td>{{it.get('Expected Delivery/Implementation Period','')}}</td>
+        <td>{{it.get('Source of Funds','')}}</td>
+        <td>{{it.get('Estimated Budget Allocation (Php)',0)|money}}</td>
+        <td>{{it.get('Attached Supporting Documents','')}}</td>
+        <td>{{it.get('Remarks','')}}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="9" style="text-align:right"><b>TOTAL</b></td>
+        <td><b>{{row.total|money}}</b></td>
+        <td colspan="2"></td>
+      </tr>
+    </table>
+
+    <div class="sign-grid">
+      <div class="sign">
+        <p>Prepared by:</p>
+        <div class="esign">{{sig.ppmp_prepared[0]}}</div>
+        <b>{{sig.ppmp_prepared[0]}}</b><br>
+        <span>{{sig.ppmp_prepared[1]}}</span><br>
+        <small>Date: {{row.created_at}}</small>
+        <div class="esign-card">System generated e-signature</div>
+      </div>
+      <div class="sign">
+        <p>APPROVED BY:</p>
+        <div class="esign">{{sig.ppmp_approved[0]}}</div>
+        <b>{{sig.ppmp_approved[0]}}</b><br>
+        <span>{{sig.ppmp_approved[1]}}</span><br>
+        <small>Date: {{row.created_at}}</small>
+        <div class="esign-card">System generated e-signature</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

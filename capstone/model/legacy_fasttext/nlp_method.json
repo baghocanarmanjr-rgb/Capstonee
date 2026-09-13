@@ -1,0 +1,217 @@
+{
+  "method": "AI-only COA-domain FastText + direct multi-class Logistic Regression",
+  "classifier": "OneVsRest LogisticRegression",
+  "runtime_location": "PR-to-PO NLP Verification only",
+  "decision_mode": "AI_ONLY_DIRECT_MULTICLASS",
+  "runtime_rules_used": false,
+  "hybrid_score_used": false,
+  "rule_fallback_used": false,
+  "status_classes": [
+    "Acceptable",
+    "Needs Recanvass",
+    "Needs Review",
+    "Reject"
+  ],
+  "issue_classes": [
+    "Different item",
+    "General discrepancy",
+    "Incomplete or ambiguous description",
+    "Minor wording or spelling difference",
+    "Missing item description",
+    "No discrepancy",
+    "Quantity mismatch",
+    "Specification mismatch",
+    "Unit mismatch"
+  ],
+  "feature_layout": "PR vector + PO vector + absolute difference + element-wise product + 8 generic pair statistics",
+  "vector_size_each": 64,
+  "classifier_dimensions": 264,
+  "coa_workbook": "COA_Inventory_Dataset.xlsx",
+  "coa_valid_unique_items": 838,
+  "coa_generated_pairs": 6704,
+  "manual_labelled_pairs": 20,
+  "total_training_pairs": 6724,
+  "held_out_source_items": 168,
+  "status_model_C": 2.0,
+  "issue_model_C": 2.0,
+  "status_hyperparameter_search": [
+    {
+      "C": 0.5,
+      "weighted_f1": 0.9386791337495514
+    },
+    {
+      "C": 2.0,
+      "weighted_f1": 0.9480713844356992
+    }
+  ],
+  "issue_hyperparameter_search": [
+    {
+      "C": 0.5,
+      "weighted_f1": 0.9407031467638237
+    },
+    {
+      "C": 2.0,
+      "weighted_f1": 0.963694338357514
+    }
+  ],
+  "status_evaluation": {
+    "accuracy": 0.9479166666666666,
+    "precision_weighted": 0.9568965517241379,
+    "recall_weighted": 0.9479166666666666,
+    "f1_weighted": 0.9480713844356992,
+    "test_records": 1344,
+    "labels": [
+      "Acceptable",
+      "Needs Review",
+      "Needs Recanvass",
+      "Reject"
+    ],
+    "confusion_matrix": [
+      [
+        275,
+        61,
+        0,
+        0
+      ],
+      [
+        0,
+        336,
+        0,
+        0
+      ],
+      [
+        0,
+        8,
+        328,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        335
+      ]
+    ]
+  },
+  "issue_evaluation": {
+    "accuracy": 0.9635416666666666,
+    "precision_weighted": 0.9672795192590103,
+    "recall_weighted": 0.9635416666666666,
+    "f1_weighted": 0.963694338357514,
+    "test_records": 1344,
+    "labels": [
+      "Different item",
+      "General discrepancy",
+      "Incomplete or ambiguous description",
+      "Minor wording or spelling difference",
+      "Missing item description",
+      "No discrepancy",
+      "Quantity mismatch",
+      "Specification mismatch",
+      "Unit mismatch"
+    ],
+    "confusion_matrix": [
+      [
+        248,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        166,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        167,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        85,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        22,
+        13,
+        0,
+        296,
+        0,
+        5,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        212,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        36,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        85
+      ]
+    ]
+  },
+  "evaluation_note": "Evaluation holds out complete COA source items from supervised classifier training. The examples remain controlled synthetic PR/PO variations and must not be presented as external accuracy on real historical municipal PR/PO documents.",
+  "important_limitation": "No model can guarantee detection of every possible discrepancy. Real reviewed PR/PO outcomes should be added as labelled training records for stronger external validity."
+}

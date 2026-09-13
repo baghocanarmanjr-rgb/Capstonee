@@ -1,0 +1,78 @@
+COMPLETE END-TO-END TESTING CHECKLIST
+
+A. LOGIN AND ADMIN
+[ ] Login using admin / admin123
+[ ] Open User Management
+[ ] Create a test Staff or Inspector account
+
+B. PPMP
+[ ] Open Inventory Item Source or DBM / NON-DBM / LIB
+[ ] Select an item and generate one PPMP record
+[ ] Review the saved PPMP item and print the PPMP
+
+C. APP
+[ ] Open APP
+[ ] Generate APP from the PPMP
+[ ] Open Review
+[ ] Confirm all items and approve the APP
+
+D. PR
+[ ] Open PR
+[ ] Confirm only approved APP records are selectable
+[ ] Create PR from the approved APP
+[ ] Review the APP, PPMP, and PR items
+[ ] Approve and print PR
+
+E. AOQ
+[ ] Open AOQ
+[ ] Select the approved PR
+[ ] Upload sample_files\SAMPLE_AOQ_ONE_WINNER.xlsx or another supported AOQ layout
+[ ] Confirm the selected PR is shown on the left
+[ ] Confirm detected AOQ details are shown on the right
+[ ] Review all detected suppliers
+[ ] Select exactly one winner
+[ ] Review/correct winning-offer items
+[ ] Save AOQ
+[ ] Open AOQ review and approve
+
+F. PO - NLP NOT REQUIRED YET
+[ ] Open PO
+[ ] Generate PO from the approved AOQ
+[ ] Confirm PO supplier/items came from AOQ, not directly from PR
+[ ] Review PR, AOQ, and PO sections
+[ ] Approve and print PO
+[ ] Confirm the process can stop here without running NLP
+
+G. NLP
+[ ] Confirm model page reports Active
+[ ] Select the approved PO
+[ ] Run FastText NLP verification
+[ ] Review PR and PO items plus status/issue probabilities
+[ ] Approve the NLP result
+[ ] Confirm Needs Recanvass/Reject blocks IAR
+[ ] Confirm Acceptable/Needs Review allows IAR
+
+H. IAR / AIR
+[ ] Create IAR from eligible PO
+[ ] Review delivery items
+[ ] Approve IAR
+[ ] Confirm inventory items were added once only
+
+I. INVENTORY
+[ ] Confirm inventory IDs, quantities, source PO, and unit costs
+[ ] Confirm no duplicate addition when reopening an approved IAR
+
+J. RIS / ICS
+[ ] For Consumable inventory, select item and quantity and create RIS
+[ ] For Equipment inventory, select item and create ICS
+[ ] Review before approval
+[ ] Approve
+[ ] Confirm inventory quantity was deducted only once
+[ ] Print RIS/ICS
+
+K. REPORTS AND AUDIT
+[ ] Download Procurement Chain CSV
+[ ] Download Inventory CSV
+[ ] Download RIS/ICS CSV
+[ ] Download Audit Trail CSV
+[ ] Confirm activities appear in Audit Trail

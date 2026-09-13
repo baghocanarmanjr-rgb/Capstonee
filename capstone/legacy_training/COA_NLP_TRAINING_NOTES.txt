@@ -1,0 +1,17 @@
+COA WORKBOOK INTEGRATION WITH AI-ONLY PR–PO NLP VERIFICATION
+
+1. The inventory workbook remains the source of items. It does not display an anomaly score.
+2. Every valid worksheet and row in data/COA_Inventory_Dataset.xlsx is read dynamically.
+3. Real article, description, unit, and specification text form the domain corpus.
+4. Controlled four-class examples are generated: Acceptable, Needs Review, Needs Recanvass, Reject.
+5. Controlled issue labels are also generated for specification, quantity, unit, missing-description,
+   different-item, minor wording, and incomplete-description discrepancies.
+6. Generated examples are saved to data/COA_Generated_PR_PO_Training_Pairs.csv for audit/review.
+7. Existing manually labelled PR–PO examples are merged with the COA-derived examples.
+8. FastText learns Asuncion item terminology. Trained Logistic Regression classifiers directly
+   predict the final status and primary issue.
+9. No hardcoded rule, hybrid score, threshold mapping, live reference override, or rules fallback
+   controls the final result.
+10. The only user-facing discrepancy decision remains in PR–PO NLP Verification.
+11. COA-derived pairs are synthetic augmentation. Add real reviewed PR–PO outcomes and use an
+    untouched real holdout set for final external accuracy reporting.

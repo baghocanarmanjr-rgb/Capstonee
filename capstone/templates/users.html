@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar"><div><h2>User Management</h2><p class="muted">Administrator-only account creation and password reset.</p></div></div>
+<div class="grid grid-2">
+  <div class="card"><h3>Create User</h3><form method="post" class="form-grid" data-confirm="Create this system user?"><input type="hidden" name="action" value="create"><div class="form-field"><label>Username</label><input name="username" minlength="3" required></div><div class="form-field"><label>Role</label><select name="role"><option>Staff</option><option>Inspector</option><option>Admin</option></select></div><div class="form-field full"><label>Temporary Password</label><input name="password" type="password" minlength="8" required></div><div class="form-actions full"><button class="btn primary" type="submit">Create User</button></div></form></div>
+  <div class="card"><h3>Reset Password</h3><form method="post" class="form-grid" data-confirm="Reset the selected user's password?"><input type="hidden" name="action" value="reset_password"><div class="form-field full"><label>User</label><select name="user_id" required><option value="">Select user</option>{% for r in rows %}<option value="{{r.id}}">{{r.username}} — {{r.role}}</option>{% endfor %}</select></div><div class="form-field full"><label>New Password</label><input name="password" type="password" minlength="8" required></div><div class="form-actions full"><button class="btn primary" type="submit">Reset Password</button></div></form></div>
+</div>
+<div class="card" style="margin-top:16px"><h3>System Users</h3><table class="table"><tr><th>Username</th><th>Role</th></tr>{% for r in rows %}<tr><td>{{r.username}}</td><td><span class="badge info">{{r.role}}</span></td></tr>{% endfor %}</table></div>
+{% endblock %}

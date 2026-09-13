@@ -1,0 +1,38 @@
+HOW TO INSTALL THE COMPLETE START-TO-END SYSTEM
+
+1. Stop the old system using Ctrl + C.
+2. Extract this ZIP completely.
+3. Open PowerShell inside the extracted package folder. You must see:
+   - INSTALL_COMPLETE_SYSTEM.ps1
+   - capstone folder
+4. Run this ONE LINE:
+
+powershell -ExecutionPolicy Bypass -File .\INSTALL_COMPLETE_SYSTEM.ps1 -ExistingSystem "C:\Users\User\Downloads\KAPSTON\capstone" -Target "C:\Users\User\Downloads\KAPSTON_COMPLETE\capstone"
+
+The installer places the corrected complete system in a separate folder and migrates, when found:
+- current SQLite database
+- compatible active V2 model\fasttext_nlp folder
+- uploaded AOQ/source files
+- PPMP and inventory Excel workbooks
+
+5. Install dependencies and automatically run validation plus the isolated workflow smoke test:
+
+cd C:\Users\User\Downloads\KAPSTON_COMPLETE\capstone
+powershell -ExecutionPolicy Bypass -File .\INSTALL_DEPENDENCIES.ps1
+
+The smoke test uses a temporary database and will not change your real records.
+
+6. Start the complete system:
+
+powershell -ExecutionPolicy Bypass -File .\START_SYSTEM.ps1
+
+7. Open:
+http://127.0.0.1:5000
+
+Fresh-database login:
+admin / admin123
+
+IMPORTANT
+- The system works through creating and approving PO without NLP.
+- NLP and IAR/Inventory/RIS/ICS require an active V2 model and an approved eligible NLP result.
+- The uploaded KAPSTON(2).zip did not contain the newly trained model assets. The installer migrates your existing compatible model automatically. If none is found, install the Colab model ZIP later using install_colab_model_V2.py.

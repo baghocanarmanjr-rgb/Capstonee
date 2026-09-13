@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar"><div><h2>PPMP</h2><p class="muted">DBM, NON-DBM, and LIB remain the PPMP categories. The inventory workbook is a searchable item source.</p></div><a class="btn primary" href="/ppmp/dataset">Open Inventory Item Source</a></div>
+<div class="grid grid-4"><div class="card center"><h2>DBM</h2><p>Government warehouse items.</p><a class="btn primary" href="/ppmp/DBM">Open DBM Item List</a></div><div class="card center"><h2>NON-DBM</h2><p>Private supplier items not in DBM.</p><a class="btn orange" href="/ppmp/NON-DBM">Open NON-DBM Item List</a></div><div class="card center"><h2>LIB</h2><p>Budget items: travel, meals, training, wages.</p><a class="btn blue" href="/ppmp/LIB">Open LIB Item List</a></div><div class="card center dataset-source-card"><h2>Inventory Item Source</h2><p>{{dataset_status.config.row_count if dataset_status.config else 0}} rows from {{dataset_status.config.sheet_count if dataset_status.config else 0}} dynamically detected sheet(s).</p><a class="btn primary" href="/ppmp/dataset">Search Source Items for PPMP</a></div></div>
+<div class="card" style="margin-top:16px"><h3>Created PPMP Records</h3><table class="table"><tr><th>PPMP Identifier</th><th>Type</th><th>Item Saved</th><th>Office</th><th>Total</th><th>Status</th><th>Actions</th></tr>{% for r in rows %}<tr><td><span class="id-chip">{{r.no}}</span></td><td><span class="badge info">{{r.type}}</span></td><td><b>{{r.item_count}}</b> item(s)<br><span class="muted">{{r.item_preview}}</span></td><td>{{r.office}}</td><td>{{r.total|money}}</td><td><span class="badge warn">{{r.status}}</span></td><td class="actions ppmp-action-stack"><button type="button" class="btn small" onclick='openSavedPPMP({{r.id}}, {{r.items_list|tojson}})'>Review Items in {{r.no}}</button><a class="btn small" href="/ppmp/{{r.id}}/print">Open / Print {{r.no}}</a></td></tr>{% endfor %}</table></div>
+
+<div id="savedPPMPModal" class="modal">
+  <div class="modal-content ppmp-editor-modal">
+    <button type="button" class="modal-x saved-close">&times;</button>
+    <div class="modal-head">
+      <div class="modal-icon">☷</div>
+      <div>
+        <h3>View / Edit PPMP Item</h3>
+        <p class="muted">View the saved PPMP items and edit the selected item details.</p>
+      </div>
+    </div>
+    <form id="savedPPMPForm" method="post">
+      <input type="hidden" name="item_index" id="saved_item_index" value="0">
+      <div class="selected-strip">
+        <label>PPMP Item <span id="savedItemPosition">(1 of 1)</span></label>
+        <div class="selected-nav"><select id="savedItemSelect"></select></div>
+      </div>
+      <div class="ppmp-editor-grid">
+        <label>General Description and Objective <input name="general" id="s_general"></label>
+        <label>Type of Project <input name="type" id="s_type"></label>
+        <label>Quantity and Size of Project <input name="quantity" id="s_quantity"></label>
+        <label>Recommended Mode <input name="mode" id="s_mode"></label>
+        <label>Pre-Procurement <input name="preproc" id="s_preproc"></label>
+        <label>Start <input name="start" id="s_start"></label>
+        <label>End <input name="end" id="s_end"></label>
+        <label>Delivery / Implementation <input name="delivery" id="s_delivery"></label>
+        <label>Source of Funds <input name="source" id="s_source"></label>
+        <label>Estimated Budget <input name="budget" id="s_budget"></label>
+        <label>Documents <input name="docs" id="s_docs"></label>
+        <label class="full">Remarks <textarea name="remarks" id="s_remarks"></textarea></label>
+      </div>
+      <div class="modal-footer"><span class="muted" id="savedCountText"></span><div class="actions"><button type="button" class="btn saved-close">Cancel</button><button type="submit" class="btn primary">Save Changes</button></div></div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const savedFields = {
+    general:'General Description and Objective of the Project to be Procured',
+    type:'Type of the Project to be Procured',
+    quantity:'Quantity and Size of the Project to be Procured',
+    mode:'Recommended Mode of Procurement',
+    preproc:'Pre-Procurement Conference Applicable (Yes/No)',
+    start:'Start of Procurement Activity',
+    end:'End of Procurement Activity',
+    delivery:'Expected Delivery/Implementation Period',
+    source:'Source of Funds',
+    budget:'Estimated Budget Allocation (Php)',
+    docs:'Attached Supporting Documents',
+    remarks:'Remarks'
+  };
+  let savedItems = [];
+  function openSavedPPMP(id, items){
+    savedItems = items || [];
+    document.getElementById('savedPPMPForm').action = `/ppmp/${id}/items`;
+    const sel = document.getElementById('savedItemSelect');
+    sel.innerHTML = '';
+    savedItems.forEach((it, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${it['_PPMP Item ID'] || ('Item ' + (i + 1))} — ${it[savedFields.general] || it[savedFields.quantity] || 'PPMP Item'}${it['_Source Item ID'] ? ' — source ' + it['_Source Item ID'] : ''}`;
+      sel.appendChild(opt);
+    });
+    loadSavedItem(0);
+    document.getElementById('savedPPMPModal').style.display = 'block';
+  }
+  function loadSavedItem(i){
+    const item = savedItems[i] || {};
+    Object.keys(savedFields).forEach(f => {
+      const el = document.getElementById('s_' + f);
+      if(el) el.value = item[savedFields[f]] || '';
+    });
+    document.getElementById('saved_item_index').value = i;
+    document.getElementById('savedItemSelect').value = i;
+    document.getElementById('savedItemPosition').textContent = `(${i + 1} of ${savedItems.length})`;
+    document.getElementById('savedCountText').textContent = `${savedItems.length} PPMP item(s)`;
+  }
+  document.getElementById('savedItemSelect').onchange = function(){ loadSavedItem(Number(this.value)); };
+  document.querySelectorAll('.saved-close').forEach(btn => btn.onclick = function(){ document.getElementById('savedPPMPModal').style.display = 'none'; });
+  window.addEventListener('click', function(e){ if(e.target === document.getElementById('savedPPMPModal')) document.getElementById('savedPPMPModal').style.display = 'none'; });
+</script>
+{% endblock %}

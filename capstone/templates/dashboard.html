@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar">
+  <div><h2>System Dashboard</h2><p class="muted">Track the complete procurement and property workflow from PPMP to RIS/ICS.</p></div>
+  <span class="badge {{ 'ok' if model_state.active else 'warn' }}">NLP Model: {{ 'Active' if model_state.active else 'Not Installed' }}</span>
+</div>
+
+<div class="workflow-line">
+  {% for label, endpoint in [('PPMP','ppmp_home'),('APP','app_plan'),('PR','pr'),('AOQ','aoq'),('PO','po'),('NLP','nlp'),('IAR','iar'),('Inventory','inventory'),('RIS/ICS','ris_ics')] %}
+    <a class="workflow-node" href="{{ url_for(endpoint) }}"><b>{{ loop.index }}</b><span>{{ label }}</span></a>{% if not loop.last %}<span class="workflow-arrow">→</span>{% endif %}
+  {% endfor %}
+</div>
+
+<div class="grid grid-4" style="margin-top:16px">
+  {% for label,key in [('PPMP','ppmp'),('APP','app'),('PR','pr'),('AOQ','aoq'),('PO','po'),('NLP','nlp'),('IAR','iar'),('Inventory','inventory')] %}
+  <div class="card kpi"><div><div class="num">{{ stats[key] }}</div><div class="label">{{ label }} records</div></div><div class="kicon">{{ label[0] }}</div></div>
+  {% endfor %}
+</div>
+
+<div class="grid grid-2" style="margin-top:16px">
+  <div class="card">
+    <h3>Records Waiting for Review</h3>
+    <table class="table compact-table"><tr><th>Module</th><th>Pending</th><th>Open</th></tr>
+      {% for label,key,endpoint in [('APP','app','app_plan'),('PR','pr','pr'),('AOQ','aoq','aoq'),('PO','po','po'),('NLP','nlp','nlp'),('IAR','iar','iar')] %}
+      <tr><td>{{ label }}</td><td><span class="badge {{ 'warn' if pending[key] else 'ok' }}">{{ pending[key] }}</span></td><td><a class="btn small" href="{{ url_for(endpoint) }}">Open</a></td></tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="card">
+    <h3>Important Workflow Rules</h3>
+    <div class="rule-list">
+      <p><b>PR comes from an approved APP.</b> This keeps PPMP, APP, and PR linked.</p>
+      <p><b>PO comes from the approved AOQ winning offer.</b> It is not copied directly from the PR.</p>
+      <p><b>NLP runs only after PO approval.</b> You may complete the process through PO before running the model.</p>
+      <p><b>Inventory is updated only after IAR approval.</b> RIS/ICS approval then deducts or assigns stock.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="toolbar"><h3>Recent Activities</h3><a class="btn small" href="{{ url_for('audit') }}">Open Full Audit Trail</a></div>
+  <div class="table-scroll"><table class="table"><tr><th>Date/Time</th><th>User</th><th>Action</th><th>Module</th><th>Reference</th></tr>
+  {% for r in recent %}<tr><td>{{r.dt}}</td><td>{{r.user}}</td><td>{{r.action}}</td><td>{{r.module}}</td><td>{{r.ref}}</td></tr>{% else %}<tr><td colspan="5" class="center muted">No activities yet.</td></tr>{% endfor %}
+  </table></div>
+</div>
+{% endblock %}

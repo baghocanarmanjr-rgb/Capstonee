@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar"><div><h2>Audit Trail</h2><p class="muted">Recent user actions across procurement, receiving, inventory, and system administration.</p></div><a class="btn" href="{{url_for('report_export',report_type='audit')}}">Download CSV</a></div>
+<div class="card"><div class="table-scroll"><table class="table"><tr><th>Date/Time</th><th>User</th><th>Action</th><th>Module</th><th>Reference</th><th>Details</th></tr>{% for r in rows %}<tr><td>{{r.dt}}</td><td>{{r.user}}</td><td>{{r.action}}</td><td>{{r.module}}</td><td>{{r.ref}}</td><td>{{r.details}}</td></tr>{% else %}<tr><td colspan="6" class="center muted">No audit records yet.</td></tr>{% endfor %}</table></div></div>
+{% endblock %}

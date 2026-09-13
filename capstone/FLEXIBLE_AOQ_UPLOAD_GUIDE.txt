@@ -1,0 +1,70 @@
+FLEXIBLE AOQ / BIDDING-RESULT UPLOAD
+====================================
+
+PURPOSE
+-------
+The AOQ module no longer assumes one fixed document layout. It accepts common
+office-document formats and converts detected content into one standard,
+editable AOQ review form before approval.
+
+SUPPORTED FILE FORMATS
+----------------------
+- PDF: digital PDF text, detected PDF tables, or OCR for scanned pages
+- Images: PNG, JPG, JPEG, BMP, TIF, TIFF through Tesseract OCR
+- Word: DOCX paragraphs and tables
+- Excel: XLSX and XLSM, including multiple worksheets and merged headers
+- Delimited/plain text: CSV and TXT
+
+The legacy binary DOC format is not included because reliable offline parsing
+requires an additional external converter. Save old Word documents as DOCX or
+PDF before uploading.
+
+AUTOMATIC LAYOUT DETECTION
+--------------------------
+The extractor can interpret, among others:
+1. Labeled forms such as "Winning Supplier: ..." and "Total Amount: ..."
+2. Row-oriented tables where each supplier/quotation appears in a row
+3. Column-oriented abstracts where suppliers occupy separate price columns
+4. Multi-row and merged Excel headers
+5. Several suppliers and several quotation items
+6. Multiple Excel worksheets
+7. Digital and scanned multi-page PDFs
+
+STANDARD REVIEW OUTPUT
+----------------------
+Every source is normalized into:
+- Suppliers / bidders
+- Supplier quotation totals and remarks
+- Official winning supplier
+- Winning item name
+- Description and technical specification
+- Quantity and unit
+- Unit cost and amount
+- Bidding-result remarks
+- Original extracted text and detected source tables
+
+REQUIRED HUMAN REVIEW
+---------------------
+Automatic extraction is not final approval. The user must:
+1. Review every detected supplier.
+2. Select or enter the official winning supplier.
+3. Load and review that supplier's items.
+4. Correct missing or misread descriptions, quantities, units, prices, and totals.
+5. Add or remove winning-offer lines when the source layout is unfamiliar.
+6. Save the reviewed AOQ.
+7. Open the read-only viewing mode and double-check all items before approval.
+
+TRACEABILITY
+------------
+The system stores:
+- Original filename and local source file
+- Detected document type
+- Extraction method
+- Extraction completeness score
+- Warnings requiring review
+- Detected table snapshots
+- Raw extracted text
+- Reviewed suppliers and winning-offer items
+
+PO generation continues to use only the reviewed and approved AOQ winning offer.
+The PR-PO NLP verification remains a later, separate process.

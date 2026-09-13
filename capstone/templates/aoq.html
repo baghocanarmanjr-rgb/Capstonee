@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar">
+  <div><h2>Abstract of Quotation (AOQ) / Bidding Result</h2><p class="muted">Upload the AOQ result, compare it with the selected PR, confirm one winner, approve the AOQ, then generate the PO.</p></div>
+</div>
+
+<div class="workflow-summary">
+  <div class="workflow-summary-item active"><b>1</b><span>Select PR</span></div>
+  <div class="workflow-summary-item active"><b>2</b><span>Upload AOQ</span></div>
+  <div class="workflow-summary-item {{ 'active' if ocr_data else '' }}"><b>3</b><span>Review PR + AOQ</span></div>
+  <div class="workflow-summary-item"><b>4</b><span>Save & Approve AOQ</span></div>
+  <div class="workflow-summary-item"><b>5</b><span>Generate PO</span></div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="step-title"><span>1</span><div><h3>Select the Approved PR and Upload the AOQ File</h3><p class="muted">Supported formats: {{ supported_aoq_formats }}. The layout may be different; the system normalizes detected data into the review form below.</p></div></div>
+  <form method="post" enctype="multipart/form-data" class="form-grid" data-confirm="Upload and detect this AOQ file for the selected PR?">
+    <input type="hidden" name="action" value="extract_ocr">
+    <div class="form-field full"><label>Approved Purchase Request</label><select name="pr_id" required><option value="">Select the exact approved PR</option>{% for r in prs %}<option value="{{r.id}}">{{r.no}} — {{r.office}} — {{r.item_preview or 'Item not named'}} — {{r.total|money}}</option>{% endfor %}</select></div>
+    <div class="form-field full"><label>AOQ / Bidding Result File</label><input name="ocr_file" type="file" accept=".pdf,.png,.jpg,.jpeg,.bmp,.tif,.tiff,.docx,.xlsx,.xlsm,.csv,.txt" required></div>
+    <div class="form-actions full"><button class="btn primary" type="submit">Upload and Detect AOQ</button></div>
+  </form>
+  {% if not prs %}<p class="muted">No approved PR is available. Approve a PR first.</p>{% endif %}
+</div>
+
+{% if ocr_data and selected_pr %}
+<div class="card" style="margin-top:16px">
+  <div class="toolbar">
+    <div class="step-title"><span>3</span><div><h3>Review the Selected PR and Uploaded AOQ Result</h3><p class="muted">Nothing is saved yet. Correct any detected field before continuing.</p></div></div>
+    <form method="post"><input type="hidden" name="action" value="clear_ocr"><button class="btn" type="submit">Discard and Upload Another</button></form>
+  </div>
+
+  <div class="comparison-grid">
+    <section class="comparison-panel">
+      <div class="comparison-head"><span class="badge info">SELECTED PR</span><b>{{selected_pr.no}}</b></div>
+      <div class="summary-grid">
+        <div><span>Office</span><b>{{selected_pr.office}}</b></div>
+        <div><span>PR Total</span><b>{{selected_pr.total|money}}</b></div>
+        <div><span>Purpose</span><b>{{selected_pr.purpose}}</b></div>
+        <div><span>Items</span><b>{{selected_pr.items_list|length}}</b></div>
+      </div>
+      <div class="table-scroll"><table class="table compact-table"><tr><th>#</th><th>Requested Item / Specification</th><th>Quantity / Unit</th></tr>
+        {% for item in selected_pr.items_list %}<tr><td>{{loop.index}}</td><td><b>{{ item.get('item') or item.get('Article') or item.get('General Description and Objective of the Project to be Procured') or 'Requested Item' }}</b><br><span class="muted">{{ item.get('description') or item.get('Description / Specification') or item.get('Quantity and Size of the Project to be Procured') or '' }}</span></td><td>{{ item.get('qty') or item.get('Quantity') or item.get('Quantity and Size of the Project to be Procured') or '—' }} {{ item.get('unit') or item.get('Unit') or '' }}</td></tr>{% endfor %}
+      </table></div>
+    </section>
+
+    <section class="comparison-panel">
+      <div class="comparison-head"><span class="badge purple">UPLOADED AOQ</span><b>{{ocr_data.ocr_filename}}</b></div>
+      <div class="summary-grid">
+        <div><span>Detected Type</span><b>{{ocr_data.document_type}}</b></div>
+        <div><span>Method</span><b>{{ocr_data.extraction_method}}</b></div>
+        <div><span>Suppliers Detected</span><b>{{ocr_data.suppliers|length}}</b></div>
+        <div><span>Completeness</span><b>{{ocr_data.confidence}}%</b></div>
+      </div>
+      {% if ocr_data.warnings %}<div class="warning-box"><b>Please review:</b><ul>{% for warning in ocr_data.warnings %}<li>{{warning}}</li>{% endfor %}</ul></div>{% endif %}
+    </section>
+  </div>
+
+  <form method="post" id="aoqReviewForm" data-confirm="Save this reviewed AOQ and the selected winning supplier?">
+    <input type="hidden" name="action" value="save_ocr">
+
+    <div class="step-title section-gap"><span>3A</span><div><h3>Detected Suppliers</h3><p class="muted">Choose exactly one winner. Supplier names and amounts may be corrected.</p></div></div>
+    <div class="table-scroll"><table class="table"><tr><th>Winner</th><th>Supplier / Bidder</th><th>Quotation Total</th><th>Remarks</th><th>Detected Items</th></tr>
+      {% for supplier in ocr_data.suppliers %}
+      <tr>
+        <td class="center"><input class="winner-radio" type="radio" name="winner_index" value="{{loop.index0}}" {% if ocr_data.winner_index == loop.index0 %}checked{% endif %} required></td>
+        <td><input name="supplier_name" value="{{supplier.supplier}}" required></td>
+        <td><input name="supplier_amount" type="number" step="0.01" value="{{supplier.amount}}"></td>
+        <td><input name="supplier_remarks" value="{{supplier.remarks}}"></td>
+        <td>{{supplier['items']|length}}</td>
+      </tr>
+      {% else %}
+      <tr><td><input class="winner-radio" type="radio" name="winner_index" value="-1" checked></td><td><input name="supplier_name" value="" placeholder="Enter supplier name"></td><td><input name="supplier_amount" type="number" step="0.01"></td><td><input name="supplier_remarks"></td><td>0</td></tr>
+      {% endfor %}
+    </table></div>
+    <div class="form-field" style="margin-top:12px"><label>Manual Winner Name (only when the winner is not in the detected list)</label><input name="winner_custom" placeholder="Leave blank when a supplier above is selected"></div>
+
+    <div class="step-title section-gap"><span>3B</span><div><h3>AOQ Winning Offer Items</h3><p class="muted">These rows will become the PO items. Compare each row with the PR shown above.</p></div></div>
+    <div class="table-scroll"><table class="table offer-table"><thead><tr><th>#</th><th>Item</th><th>Description / Specification</th><th>Qty</th><th>Unit</th><th>Unit Price</th><th>Total</th><th>Remarks</th><th></th></tr></thead><tbody id="offerBody">
+      {% for item in ocr_data.offer_items %}
+      <tr><td class="row-number">{{loop.index}}</td><td><input name="offer_item" value="{{item.item}}" required></td><td><textarea name="offer_description" rows="2" required>{{item.description}}</textarea></td><td><input class="qty-input" name="offer_qty" type="number" step="0.01" value="{{item.qty}}" required></td><td><input name="offer_unit" value="{{item.unit}}" required></td><td><input class="cost-input" name="offer_unit_cost" type="number" step="0.01" value="{{item.unit_cost}}"></td><td><input class="amount-input" name="offer_amount" type="number" step="0.01" value="{{item.amount}}"></td><td><input name="offer_remarks" value="{{item.remarks}}"></td><td><button class="btn small remove-row" type="button">Remove</button></td></tr>
+      {% endfor %}
+    </tbody></table></div>
+    <div class="actions" style="margin-top:10px"><button class="btn" type="button" id="addOfferRow">+ Add Item</button></div>
+    <div class="form-field full" style="margin-top:12px"><label>General AOQ Remarks</label><textarea name="remarks">{{ocr_data.remarks}}</textarea></div>
+
+    <details class="advanced-box"><summary>Advanced: view original detected tables and extracted text</summary>
+      {% for table in ocr_data.detected_tables %}<h4>{{table.source}}</h4><div class="table-scroll"><table class="table compact-table">{% for row in table.rows %}<tr>{% for cell in row %}<td>{{cell}}</td>{% endfor %}</tr>{% endfor %}</table></div>{% endfor %}
+      <textarea rows="12" readonly>{{ocr_data.raw_text}}</textarea>
+    </details>
+
+    <div class="step-title section-gap"><span>4</span><div><h3>Save the Reviewed AOQ</h3><p class="muted">After saving, open the AOQ record below and approve it. The approved AOQ becomes available on the PO page.</p></div></div>
+    <div class="form-actions"><button class="btn primary" type="submit">Save Reviewed AOQ for {{selected_pr.no}}</button></div>
+  </form>
+</div>
+{% endif %}
+
+<div class="card" style="margin-top:16px">
+  <div class="step-title"><span>4</span><div><h3>Review and Approve Saved AOQ Records</h3><p class="muted">Only approved AOQ records can be used to generate a PO.</p></div></div>
+  <div class="table-scroll"><table class="table"><tr><th>AOQ</th><th>Linked PR</th><th>Uploaded File</th><th>Winning Supplier</th><th>Winning Amount</th><th>Status</th><th>Next Action</th></tr>
+    {% for r in rows %}<tr><td><span class="id-chip">{{r.no}}</span></td><td>{{r.pr_no}}<br><span class="muted">{{r.pr_office}}</span></td><td>{{r.ocr_filename or 'Legacy record'}}</td><td><b>{{r.winner}}</b><br><span class="muted">{{r.item_preview}}</span></td><td>{{r.winning_amount|money}}</td><td><span class="badge {{'ok' if r.status=='Approved' else 'warn'}}">{{r.status}}</span></td><td><a class="btn {{'primary' if r.status!='Approved' else 'blue'}} small" href="{{url_for('aoq_review',id=r.id)}}">{{'Review & Approve AOQ' if r.status!='Approved' else 'View Approved AOQ'}}</a>{% if r.status=='Approved' %}<a class="btn small" href="{{url_for('po')}}">Continue to PO</a>{% endif %}</td></tr>{% else %}<tr><td colspan="7" class="center muted">No AOQ records yet.</td></tr>{% endfor %}
+  </table></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if ocr_data %}
+<script>
+(function(){
+  const body=document.getElementById('offerBody');
+  if(!body) return;
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function rowHtml(){return `<tr><td class="row-number"></td><td><input name="offer_item" required></td><td><textarea name="offer_description" rows="2" required></textarea></td><td><input class="qty-input" name="offer_qty" type="number" step="0.01" value="1" required></td><td><input name="offer_unit" value="unit" required></td><td><input class="cost-input" name="offer_unit_cost" type="number" step="0.01" value="0"></td><td><input class="amount-input" name="offer_amount" type="number" step="0.01" value="0"></td><td><input name="offer_remarks"></td><td><button class="btn small remove-row" type="button">Remove</button></td></tr>`;}
+  function renumber(){body.querySelectorAll('tr').forEach((r,i)=>r.querySelector('.row-number').textContent=i+1);}
+  function bind(row){
+    const remove=row.querySelector('.remove-row'); if(remove) remove.onclick=()=>{row.remove();renumber();};
+    const qty=row.querySelector('.qty-input'), cost=row.querySelector('.cost-input'), amount=row.querySelector('.amount-input');
+    function calc(){const q=parseFloat(qty.value||0),c=parseFloat(cost.value||0);if(q>0&&c>0)amount.value=(q*c).toFixed(2);}
+    if(qty) qty.addEventListener('change',calc); if(cost) cost.addEventListener('change',calc);
+  }
+  body.querySelectorAll('tr').forEach(bind); renumber();
+  document.getElementById('addOfferRow').onclick=()=>{body.insertAdjacentHTML('beforeend',rowHtml());bind(body.lastElementChild);renumber();};
+})();
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,35 @@
+REVIEW-BEFORE-APPROVAL VIEWING MODE
+===================================
+
+Purpose
+-------
+Every approval now starts from a read-only review page. Users no longer approve
+APP, PR, AOQ, PO, NLP, IAR, RIS, or ICS directly from the compact record table.
+
+Covered processes
+-----------------
+1. APP — review APP items and the source PPMP items.
+2. PR — review the final PR requirements and source PPMP items.
+3. AOQ — review the approved PR beside the OCR-reviewed winning offer, supplier
+   records, and raw OCR text.
+4. PO — review the linked PR, approved AOQ offer, and generated PO items.
+5. PR–PO NLP Verification — review PR items, PO items, the NLP result, confidence,
+   finding, recommended action, and full comparison details.
+6. IAR — review PO items and all delivery/acceptance items before adding anything
+   to Inventory.
+7. RIS/ICS — review every item to be issued or assigned.
+
+Required approval behavior
+--------------------------
+- The list page button opens "Review All Items & Approve".
+- The review page is read-only.
+- Every item displays its line identifier, source item identifier, description,
+  specification, quantity, unit, unit cost, amount, and every stored source field.
+- Linked procurement identifiers are shown at the top.
+- The final Approve button remains disabled until the reviewer checks the
+  confirmation box.
+- Approval endpoints accept POST only and reject attempts that do not contain the
+  review confirmation value.
+- Approved records remain viewable but cannot be approved again.
+
+The review mode preserves the existing offline workflow and SQLite database.

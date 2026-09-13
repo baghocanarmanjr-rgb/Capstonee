@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar"><div><h2>RIS / ICS Issuance</h2><p class="muted">RIS issues consumables. ICS assigns equipment or semi-expendable property to an office or custodian.</p></div></div>
+<div class="grid grid-2">
+  <div class="card">
+    <div class="step-title"><span>9A</span><div><h3>Create RIS</h3><p class="muted">Select available consumable stock and the quantity to issue.</p></div></div>
+    <form method="post" data-confirm="Create this RIS with the selected consumable items?">
+      <input type="hidden" name="type" value="RIS">
+      <div class="form-field"><label>Receiving Office</label><input name="office" value="General Services Office" required></div>
+      <div class="inventory-picker">
+      {% for r in consumables %}<label class="inventory-option"><input type="checkbox" name="inventory_id" value="{{r.id}}"><span><b>{{r.item_code}} — {{r.item}}</b><small>{{r.description}} · Available: {{r.qty}} {{r.unit}}</small></span><input name="issue_qty_{{r.id}}" type="number" min="0.01" max="{{r.qty}}" step="0.01" value="1" aria-label="Issue quantity"></label>{% else %}<p class="muted">No consumable stock is available.</p>{% endfor %}
+      </div>
+      <button class="btn primary" type="submit" {% if not consumables %}disabled{% endif %}>Create RIS</button>
+    </form>
+  </div>
+  <div class="card">
+    <div class="step-title"><span>9B</span><div><h3>Create ICS</h3><p class="muted">Select available equipment and assign it to an office or custodian.</p></div></div>
+    <form method="post" data-confirm="Create this ICS with the selected equipment items?">
+      <input type="hidden" name="type" value="ICS">
+      <div class="form-field"><label>Office / Custodian</label><input name="office" value="General Services Office" required></div>
+      <div class="inventory-picker">
+      {% for r in equipment %}<label class="inventory-option"><input type="checkbox" name="inventory_id" value="{{r.id}}"><span><b>{{r.item_code}} — {{r.item}}</b><small>{{r.description}} · Available: {{r.qty}} {{r.unit}}</small></span><input name="issue_qty_{{r.id}}" type="number" min="0.01" max="1" step="0.01" value="1" aria-label="Assign quantity"></label>{% else %}<p class="muted">No equipment stock is available.</p>{% endfor %}
+      </div>
+      <button class="btn primary" type="submit" {% if not equipment %}disabled{% endif %}>Create ICS</button>
+    </form>
+  </div>
+</div>
+<div class="card" style="margin-top:16px"><h3>RIS / ICS Records</h3><div class="table-scroll"><table class="table"><tr><th>Document</th><th>Type</th><th>Office / Custodian</th><th>Date</th><th>Status</th><th>Actions</th></tr>
+{% for r in rows %}<tr><td><span class="id-chip">{{r.no}}</span></td><td><b>{{r.type}}</b><br><span class="muted">{{'Requisition and Issue Slip' if r.type=='RIS' else 'Inventory Custodian Slip'}}</span></td><td>{{r.office}}</td><td>{{r.created_at}}</td><td><span class="badge {{'ok' if r.status=='Approved' else 'warn'}}">{{r.status}}</span></td><td class="actions"><a class="btn {{'primary' if r.status!='Approved' else 'blue'}} small" href="{{url_for('ris_ics_review',id=r.id)}}">{{'Review & Approve' if r.status!='Approved' else 'View Approved'}}</a><a class="btn small" href="{{url_for('ris_ics_print',id=r.id)}}">Print</a></td></tr>{% else %}<tr><td colspan="6" class="center muted">No RIS/ICS records yet.</td></tr>{% endfor %}
+</table></div></div>
+{% endblock %}

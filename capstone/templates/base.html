@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{ title or 'Supply and Property Management System' }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="seal">MA</div>
+            <div><h1>MUNICIPALITY OF ASUNCION</h1><small>Supply and Property Management</small></div>
+        </div>
+        <nav class="nav">
+            <a class="{{ 'active' if active=='dashboard' }}" href="{{ url_for('dashboard') }}"><span class="ico">D</span>Dashboard</a>
+            <div class="nav-title">PROCUREMENT PLANNING</div>
+            <a class="{{ 'active' if active=='ppmp' }}" href="{{ url_for('ppmp_home') }}"><span class="ico">P</span>PPMP</a>
+            <div class="sub">
+                <a href="{{ url_for('ppmp_type', ptype='DBM') }}">DBM</a>
+                <a href="{{ url_for('ppmp_type', ptype='NON-DBM') }}">NON-DBM</a>
+                <a href="{{ url_for('ppmp_type', ptype='LIB') }}">LIB</a>
+                <a href="{{ url_for('ppmp_dataset') }}">Inventory Item Source</a>
+            </div>
+            <a class="{{ 'active' if active=='app' }}" href="{{ url_for('app_plan') }}"><span class="ico">A</span>APP</a>
+            <a class="{{ 'active' if active=='pr' }}" href="{{ url_for('pr') }}"><span class="ico">R</span>Purchase Request</a>
+            <a class="{{ 'active' if active=='aoq' }}" href="{{ url_for('aoq') }}"><span class="ico">Q</span>AOQ / Bidding Result</a>
+            <a class="{{ 'active' if active=='po' }}" href="{{ url_for('po') }}"><span class="ico">O</span>Purchase Order</a>
+            <a class="{{ 'active' if active=='nlp' }}" href="{{ url_for('nlp') }}"><span class="ico">N</span>PR–PO NLP Verification</a>
+
+            <div class="nav-title">RECEIVING & PROPERTY</div>
+            <a class="{{ 'active' if active=='iar' }}" href="{{ url_for('iar') }}"><span class="ico">I</span>IAR / AIR</a>
+            <a class="{{ 'active' if active=='inventory' }}" href="{{ url_for('inventory') }}"><span class="ico">S</span>Inventory</a>
+            <a class="{{ 'active' if active=='ris' }}" href="{{ url_for('ris_ics') }}"><span class="ico">C</span>RIS / ICS</a>
+
+            <div class="nav-title">SYSTEM</div>
+            <a class="{{ 'active' if active=='reports' }}" href="{{ url_for('reports') }}"><span class="ico">F</span>Reports</a>
+            <a class="{{ 'active' if active=='audit' }}" href="{{ url_for('audit') }}"><span class="ico">L</span>Audit Trail</a>
+            {% if session.get('role') == 'Admin' %}
+            <a class="{{ 'active' if active=='users' }}" href="{{ url_for('users') }}"><span class="ico">U</span>User Management</a>
+            {% endif %}
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div class="top-title">Offline Local System</div>
+            <div class="user">
+                <span class="muted"><b>{{ session.get('username','admin') }}</b> · {{ session.get('role','Staff') }}</span>
+                <div class="avatar">{{ session.get('username','A')[:2]|upper }}</div>
+                <button type="button" class="btn small" id="logoutOpenBtn">Logout</button>
+            </div>
+        </header>
+        <section class="content">
+            {% with messages=get_flashed_messages() %}
+                {% if messages %}{% for m in messages %}<div class="notice">{{ m }}</div>{% endfor %}{% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </section>
+    </main>
+</div>
+
+<div class="logout-modal-backdrop" id="logoutModal" aria-hidden="true">
+    <div class="logout-modal" role="dialog" aria-modal="true" aria-labelledby="logoutTitle">
+        <div class="logout-modal-icon">?</div>
+        <h3 id="logoutTitle">Log out of the system?</h3>
+        <p>You will need to sign in again.</p>
+        <div class="logout-modal-actions">
+            <button type="button" class="btn" id="logoutCancelBtn">Cancel</button>
+            <a class="btn danger" href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+</div>
+<script>
+(function () {
+    const modal = document.getElementById('logoutModal');
+    const openBtn = document.getElementById('logoutOpenBtn');
+    const cancelBtn = document.getElementById('logoutCancelBtn');
+    function openModal(){ if(modal){ modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); } }
+    function closeModal(){ if(modal){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); } }
+    if(openBtn) openBtn.addEventListener('click', openModal);
+    if(cancelBtn) cancelBtn.addEventListener('click', closeModal);
+    if(modal) modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+})();
+document.addEventListener('click', function(event){
+    const action = event.target.closest('[data-confirm]');
+    if(!action || action.tagName === 'FORM') return;
+    const message = action.getAttribute('data-confirm');
+    if(message && !window.confirm(message)) event.preventDefault();
+});
+document.addEventListener('submit', function(event){
+    const form = event.target.closest('form[data-confirm]');
+    if(!form) return;
+    const specific = event.submitter && event.submitter.getAttribute('data-confirm');
+    const message = specific || form.getAttribute('data-confirm');
+    if(message && !window.confirm(message)) event.preventDefault();
+});
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

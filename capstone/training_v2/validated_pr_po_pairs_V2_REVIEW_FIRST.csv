@@ -1,0 +1,81 @@
+﻿pr_text,po_text,status,issue,group_id,source,review_status
+Laptop computer; minimum 12 GB RAM,Laptop computer; offered 24 GB RAM,Acceptable,Requirement satisfied,CUR-MIN-0-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop computer; at least 12 GB RAM,Laptop computer; offered 6 GB RAM,Needs Recanvass,Below minimum,CUR-MIN-0-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop computer; minimum 12 GB RAM,Laptop computer; RAM included but value not stated,Needs Review,Missing or ambiguous information,CUR-MIN-0-C,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop computer; maximum 16 GB RAM,Laptop computer; offered 8 GB RAM,Acceptable,Requirement satisfied,CUR-MAX-0-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop computer; RAM must not exceed 16 GB,Laptop computer; offered 32 GB RAM,Needs Recanvass,Above maximum,CUR-MAX-0-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop computer; minimum 512 GB SSD,Laptop computer; offered 1024 GB SSD,Acceptable,Requirement satisfied,CUR-MIN-1-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop computer; at least 512 GB SSD,Laptop computer; offered 256 GB SSD,Needs Recanvass,Below minimum,CUR-MIN-1-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop computer; minimum 512 GB SSD,Laptop computer; SSD included but value not stated,Needs Review,Missing or ambiguous information,CUR-MIN-1-C,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop computer; maximum 768 GB SSD,Laptop computer; offered 384 GB SSD,Acceptable,Requirement satisfied,CUR-MAX-1-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop computer; SSD must not exceed 768 GB,Laptop computer; offered 2048 GB SSD,Needs Recanvass,Above maximum,CUR-MAX-1-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Portable equipment; minimum 4 kg weight,Portable equipment; offered 6 kg weight,Acceptable,Requirement satisfied,CUR-MIN-2-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Portable equipment; at least 4 kg weight,Portable equipment; offered 2 kg weight,Needs Recanvass,Below minimum,CUR-MIN-2-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Portable equipment; minimum 4 kg weight,Portable equipment; weight included but value not stated,Needs Review,Missing or ambiguous information,CUR-MIN-2-C,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Portable equipment; maximum 5 kg weight,Portable equipment; offered 3 kg weight,Acceptable,Requirement satisfied,CUR-MAX-2-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Portable equipment; weight must not exceed 5 kg,Portable equipment; offered 8 kg weight,Needs Recanvass,Above maximum,CUR-MAX-2-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Electrical equipment; minimum 90 watts power consumption,Electrical equipment; offered 120 watts power consumption,Acceptable,Requirement satisfied,CUR-MIN-3-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Electrical equipment; at least 90 watts power consumption,Electrical equipment; offered 60 watts power consumption,Needs Recanvass,Below minimum,CUR-MIN-3-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Electrical equipment; minimum 90 watts power consumption,Electrical equipment; power consumption included but value not stated,Needs Review,Missing or ambiguous information,CUR-MIN-3-C,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Electrical equipment; maximum 100 watts power consumption,Electrical equipment; offered 75 watts power consumption,Acceptable,Requirement satisfied,CUR-MAX-3-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Electrical equipment; power consumption must not exceed 100 watts,Electrical equipment; offered 150 watts power consumption,Needs Recanvass,Above maximum,CUR-MAX-3-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Network switch; minimum 8 ports LAN ports,Network switch; offered 16 ports LAN ports,Acceptable,Requirement satisfied,CUR-MIN-4-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Network switch; at least 8 ports LAN ports,Network switch; offered 4 ports LAN ports,Needs Recanvass,Below minimum,CUR-MIN-4-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Network switch; minimum 8 ports LAN ports,Network switch; LAN ports included but value not stated,Needs Review,Missing or ambiguous information,CUR-MIN-4-C,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Network switch; maximum 12 ports LAN ports,Network switch; offered 5 ports LAN ports,Acceptable,Requirement satisfied,CUR-MAX-4-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Network switch; LAN ports must not exceed 12 ports,Network switch; offered 24 ports LAN ports,Needs Recanvass,Above maximum,CUR-MAX-4-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Office printer; minimum 20 ppm print speed,Office printer; offered 30 ppm print speed,Acceptable,Requirement satisfied,CUR-MIN-5-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Office printer; at least 20 ppm print speed,Office printer; offered 15 ppm print speed,Needs Recanvass,Below minimum,CUR-MIN-5-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Office printer; minimum 20 ppm print speed,Office printer; print speed included but value not stated,Needs Review,Missing or ambiguous information,CUR-MIN-5-C,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Office printer; maximum 25 ppm print speed,Office printer; offered 18 ppm print speed,Acceptable,Requirement satisfied,CUR-MAX-5-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Office printer; print speed must not exceed 25 ppm,Office printer; offered 35 ppm print speed,Needs Recanvass,Above maximum,CUR-MAX-5-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop; minimum 768 GB SSD,Laptop; 1 TB solid-state drive,Acceptable,Requirement satisfied,CUR-CONV-0,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop; minimum 1536 GB SSD,Laptop; 1 TB SSD,Needs Recanvass,Below minimum,CUR-CONV-1,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Equipment; maximum 6 kg weight,Equipment; weight 4500 g,Acceptable,Requirement satisfied,CUR-CONV-2,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Equipment; maximum 6 kg weight,Equipment; weight 9000 g,Needs Recanvass,Above maximum,CUR-CONV-3,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Office equipment; minimum 18 months warranty,Office equipment; 2 years warranty,Acceptable,Requirement satisfied,CUR-CONV-4,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Office equipment; minimum 30 months warranty,Office equipment; 2 years warranty,Needs Recanvass,Below minimum,CUR-CONV-5,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Container; minimum 2 liters capacity,Container; 2500 ml capacity,Acceptable,Requirement satisfied,CUR-CONV-6,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Container; minimum 5 liters capacity,Container; 3000 ml capacity,Needs Recanvass,Below minimum,CUR-CONV-7,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Network switch; exactly 12 ports,Network switch; 12 Ethernet ports,Acceptable,Requirement satisfied,CUR-EXR-0,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Network switch; exactly 12 ports,Network switch; 24 Ethernet ports,Needs Recanvass,Exact or range mismatch,CUR-EXR-1,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Monitor; display size between 13 and 15.6 inches,Monitor; display size 14 inches,Acceptable,Requirement satisfied,CUR-EXR-2,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Monitor; display size between 13 and 15.6 inches,Monitor; display size 17 inches,Needs Recanvass,Exact or range mismatch,CUR-EXR-3,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Bond paper; exact quantity 20 reams,Bond paper; offered quantity 20 reams,Acceptable,Requirement satisfied,CUR-EXR-4,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Bond paper; exact quantity 20 reams,Bond paper; offered quantity 10 reams,Needs Recanvass,Quantity or unit mismatch,CUR-EXR-5,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Ink bottle; quantity 5 bottles,Ink bottle; quantity not indicated,Needs Review,Missing or ambiguous information,CUR-EXR-6,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Office chair; quantity 12 pieces,Office chair; offered quantity 12 units,Acceptable,Requirement satisfied,CUR-EXR-7,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop; minimum 768 GB SSD,Laptop; 768 GB storage,Needs Review,Missing or ambiguous information,CUR-SPEC-0,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Printer; Ethernet interface,Printer; network connectivity,Needs Review,Missing or ambiguous information,CUR-SPEC-1,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Chair; stainless-steel frame,Chair; durable metal frame,Needs Review,Missing or ambiguous information,CUR-SPEC-2,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop; minimum 768 GB SSD,Laptop; 1 TB hard disk drive,Needs Recanvass,Specification mismatch,CUR-SPEC-3,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Printer ink; magenta,Printer ink; cyan,Needs Recanvass,Specification mismatch,CUR-SPEC-4,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Bond paper; A4 70 gsm,Bond paper; legal size 80 gsm,Needs Recanvass,Specification mismatch,CUR-SPEC-5,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Printer; Ethernet interface,Printer; USB only,Needs Recanvass,Specification mismatch,CUR-SPEC-6,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Monitor; 1920 x 1080 resolution,Monitor; 1366 x 768 resolution,Needs Recanvass,Specification mismatch,CUR-SPEC-7,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Laptop computer,Offered item: Printer toner cartridge,Reject,Different item,CUR-ID-0-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Laptop computer,No corresponding offered item was provided,Reject,Missing item,CUR-ID-0-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Office chair,Offered item: Network switch,Reject,Different item,CUR-ID-1-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Office chair,No corresponding offered item was provided,Reject,Missing item,CUR-ID-1-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Bond paper,Offered item: LED monitor,Reject,Different item,CUR-ID-2-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Bond paper,No corresponding offered item was provided,Reject,Missing item,CUR-ID-2-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Printer toner cartridge,Offered item: Water pump,Reject,Different item,CUR-ID-3-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Printer toner cartridge,No corresponding offered item was provided,Reject,Missing item,CUR-ID-3-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Network switch,Offered item: First-aid kit,Reject,Different item,CUR-ID-4-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Network switch,No corresponding offered item was provided,Reject,Missing item,CUR-ID-4-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: LED monitor,Offered item: Projector,Reject,Different item,CUR-ID-5-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: LED monitor,No corresponding offered item was provided,Reject,Missing item,CUR-ID-5-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Water pump,Offered item: Barcode scanner,Reject,Different item,CUR-ID-6-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Water pump,No corresponding offered item was provided,Reject,Missing item,CUR-ID-6-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: First-aid kit,Offered item: Laptop computer,Reject,Different item,CUR-ID-7-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: First-aid kit,No corresponding offered item was provided,Reject,Missing item,CUR-ID-7-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Projector,Offered item: Office chair,Reject,Different item,CUR-ID-8-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Projector,No corresponding offered item was provided,Reject,Missing item,CUR-ID-8-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Barcode scanner,Offered item: Bond paper,Reject,Different item,CUR-ID-9-A,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Required item: Barcode scanner,No corresponding offered item was provided,Reject,Missing item,CUR-ID-9-B,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop; at least 24 GB installed memory,Laptop; 32 GB RAM,Acceptable,Requirement satisfied,CUR-PARA-0,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Network switch; minimum 12 LAN ports,Network switch; 16 Ethernet ports,Acceptable,Requirement satisfied,CUR-PARA-1,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Portable equipment; weight not more than 8 kg,Portable equipment; unit weight 6 kg,Acceptable,Requirement satisfied,CUR-PARA-2,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Office equipment; minimum 18 months service warranty,Office equipment; warranty period 24 months,Acceptable,Requirement satisfied,CUR-PARA-3,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Laptop; minimum 384 GB SSD,Laptop; drive capacity 384 GB,Needs Review,Missing or ambiguous information,CUR-PARA-4,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated
+Office printer; minimum 25 ppm print speed,Office printer; fast output speed,Needs Review,Missing or ambiguous information,CUR-PARA-5,curated_seed_requires_staff_review,REVIEW_AND_CHANGE_SOURCE_TO_staff_validated

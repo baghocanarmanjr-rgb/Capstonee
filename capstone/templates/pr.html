@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar"><div><h2>Purchase Request (PR)</h2><p class="muted">Create a PR only from an approved APP record. This preserves the required PPMP → APP → PR connection.</p></div></div>
+<div class="card">
+  <div class="step-title"><span>1</span><div><h3>Select an Approved APP</h3><p class="muted">Only APP records without an existing PR are listed.</p></div></div>
+  <form method="post" class="form-grid" data-confirm="Create a Purchase Request from the selected approved APP?">
+    <div class="form-field full"><label>Approved APP Record</label><select name="app_id" required><option value="">Select the exact APP source</option>{% for a in apps %}<option value="{{a.id}}">{{a.no}} — Source {{a.ppmp_no}} — {{a.office}} — {{a.item_preview or 'Item not named'}} — {{a.total|money}}</option>{% endfor %}</select></div>
+    <div class="form-field full"><label>Purpose</label><textarea name="purpose">Procurement of approved supplies, equipment, and services.</textarea></div>
+    <div class="form-actions full"><button class="btn primary" type="submit">Create PR from Approved APP</button></div>
+  </form>
+  {% if not apps %}<p class="muted">No approved APP is ready. Generate and approve an APP first.</p>{% endif %}
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="step-title"><span>2</span><div><h3>Review and Approve Purchase Requests</h3><p class="muted">Approved PRs become available for AOQ upload.</p></div></div>
+  <div class="table-scroll"><table class="table"><tr><th>PR</th><th>Source APP / PPMP</th><th>Requested Items</th><th>Office / Total</th><th>Status</th><th>Action</th></tr>
+  {% for r in prs %}<tr><td><span class="id-chip">{{r.no}}</span></td><td><b>{{r.app_no or 'No APP link'}}</b><br><span class="muted">{{r.ppmp_no or 'No PPMP link'}} {{r.ppmp_type or ''}}</span></td><td><b>{{r.item_count}}</b> item(s)<br><span class="muted">{{r.item_preview}}</span></td><td>{{r.office}}<br><b>{{r.total|money}}</b></td><td><span class="badge {{'ok' if r.status=='Approved' else 'warn'}}">{{r.status}}</span></td><td class="actions"><a class="btn {{'primary' if r.status!='Approved' else 'blue'}} small" href="{{ url_for('pr_review', id=r.id) }}">{{'Review & Approve' if r.status!='Approved' else 'View Approved PR'}}</a><a class="btn small" href="{{ url_for('pr_print', id=r.id) }}">Print</a></td></tr>{% else %}<tr><td colspan="6" class="center muted">No PR records yet.</td></tr>{% endfor %}
+  </table></div>
+</div>
+{% endblock %}

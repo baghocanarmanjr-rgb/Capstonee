@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar"><div><h2>Live Inventory</h2><p class="muted">Items enter Inventory after IAR approval. RIS/ICS approval deducts or assigns quantities.</p></div><a class="btn" href="{{url_for('ppmp_dataset')}}">Open Planning Source Workbook</a></div>
+<div class="card">
+  <div class="step-title"><span>8</span><div><h3>Received Inventory Items</h3><p class="muted">Available quantity is the current balance after approved issuances.</p></div></div>
+  <div class="table-scroll"><table class="table"><tr><th>Inventory ID</th><th>Item / Description</th><th>Category</th><th>Available Quantity</th><th>Unit Cost</th><th>Source PO</th><th>Status</th></tr>
+  {% for r in rows %}<tr><td><span class="id-chip">{{r.item_code or ('INV-' ~ r.id)}}</span></td><td><b>{{r.item}}</b><br><span class="muted">{{r.description or 'No additional description'}}</span></td><td>{{r.category}}</td><td><b>{{r.qty}}</b> {{r.unit}}</td><td>{{r.unit_cost|money if r.unit_cost else '—'}}</td><td>{{r.source_po or '—'}}</td><td><span class="badge {{'ok' if r.qty and r.qty > 0 else 'warn'}}">{{r.status}}</span></td></tr>{% else %}<tr><td colspan="7" class="center muted">No received items yet. Approve an IAR to add inventory.</td></tr>{% endfor %}
+  </table></div>
+</div>
+<div class="card" style="margin-top:16px">
+  <h3>Recent Inventory Transactions</h3>
+  <div class="table-scroll"><table class="table compact-table"><tr><th>Date</th><th>Document</th><th>Type</th><th>Inventory Item</th><th>Quantity</th><th>Office / Custodian</th><th>User</th></tr>
+  {% for t in transactions %}<tr><td>{{t.created_at}}</td><td>{{t.document_no}}</td><td>{{t.transaction_type}}</td><td>{{t.item_code}} — {{t.item}}</td><td>{{t.qty}} {{t.unit}}</td><td>{{t.office}}</td><td>{{t.created_by}}</td></tr>{% else %}<tr><td colspan="7" class="center muted">No approved RIS/ICS transactions yet.</td></tr>{% endfor %}
+  </table></div>
+</div>
+{% endblock %}

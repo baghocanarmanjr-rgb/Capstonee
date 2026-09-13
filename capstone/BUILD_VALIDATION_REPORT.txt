@@ -1,0 +1,58 @@
+COMPLETE SYSTEM BUILD VALIDATION REPORT
+=======================================
+
+BASE PROJECT
+------------
+The complete build was created from the uploaded KAPSTON(2).zip system.
+
+CONNECTED WORKFLOW VALIDATED
+----------------------------
+PPMP -> APP -> PR -> AOQ -> PO -> PR-PO NLP Verification -> IAR/AIR -> Inventory -> RIS/ICS
+
+AOQ / PO CORRECTIONS
+--------------------
+- AOQ still accepts layout-flexible PDF, image, DOCX, XLSX/XLSM, CSV, and TXT inputs.
+- Step 3 displays the selected approved PR and the detected AOQ result together.
+- Detected suppliers and winning-offer items are editable before saving.
+- Exactly one winning supplier is required.
+- PO is generated from the approved AOQ winning offer, not copied directly from the PR.
+- PO can be created and approved without running NLP.
+- IAR/AIR remains blocked until an eligible NLP result is reviewed and approved.
+
+SYSTEM COMPLETION WORK
+----------------------
+- Connected PR creation to approved APP records.
+- Added clear review-before-approval pages across APP, PR, AOQ, PO, NLP, IAR, and RIS/ICS.
+- Added inventory transactions and transactional RIS/ICS quantity deduction.
+- Prevented repeated RIS/ICS approval from deducting inventory twice.
+- Added procurement, inventory, issuance, and audit CSV reports.
+- Added administrator User Management and secure password hashing/migration.
+- Added dashboard workflow counts, pending counts, and NLP model status.
+- Added V2 FastText runtime and trained-model migration/installation support.
+- Added installation, startup, validation, smoke-test, and end-to-end testing scripts.
+
+VALIDATION PERFORMED
+--------------------
+- Python syntax compilation passed for all relevant Python files.
+- All Jinja templates parsed successfully.
+- All template url_for endpoint references resolved.
+- Bundled SQLite integrity_check returned: ok.
+- The verified V2 runtime SHA-256 matched:
+  67CD33E0F41574693908277B502209CBCC56F7A64F71441ADD3202F255F0D9AC
+- Isolated workflow integration validation completed 52 checks, including:
+  APP generation/approval; PR creation/approval; flexible AOQ XLSX extraction;
+  single winner selection; AOQ approval; PO generation/approval without NLP;
+  IAR blocking before NLP; downstream IAR/Inventory/ICS behavior using a clearly
+  labeled test fixture; one-time inventory deduction; major page rendering;
+  print rendering; CSV exports; and SQLite integrity.
+- SYSTEM_SMOKE_TEST.py is included so the installed Windows environment can run
+  the same connected workflow with the real Flask test client after dependencies
+  are installed. It uses only a temporary database and does not alter live data.
+
+TRAINED NLP MODEL NOTE
+----------------------
+The uploaded base ZIP did not contain the user's newly trained V2 model assets.
+No model weights or performance results were fabricated. The installer migrates
+an existing compatible model\fasttext_nlp folder when found. Otherwise, the
+system remains fully usable through approved PO, and the trained model can be
+installed later using install_colab_model_V2.py.

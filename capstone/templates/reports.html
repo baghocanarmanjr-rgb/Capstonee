@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="toolbar"><div><h2>Reports</h2><p class="muted">View system totals and export complete records as CSV files.</p></div></div>
+<div class="grid grid-4">
+  <div class="card kpi"><div><div class="num">{{totals.ppmp_total|money}}</div><div class="label">PPMP total</div></div><div class="kicon">P</div></div>
+  <div class="card kpi"><div><div class="num">{{totals.pr_total|money}}</div><div class="label">PR total</div></div><div class="kicon">R</div></div>
+  <div class="card kpi"><div><div class="num">{{totals.po_total|money}}</div><div class="label">PO total</div></div><div class="kicon">O</div></div>
+  <div class="card kpi"><div><div class="num">{{totals.inventory_value|money}}</div><div class="label">Current inventory value</div></div><div class="kicon">I</div></div>
+</div>
+<div class="grid grid-2" style="margin-top:16px">
+  <div class="card"><h3>Record Counts</h3><table class="table compact-table"><tr><th>Module</th><th>Records</th></tr>{% for name,count in counts.items() %}<tr><td>{{name}}</td><td><b>{{count}}</b></td></tr>{% endfor %}</table></div>
+  <div class="card"><h3>Download Reports</h3><div class="report-links">
+    <a class="report-link" href="{{url_for('report_export',report_type='procurement')}}"><b>Procurement Chain CSV</b><span>PR, AOQ, supplier, PO, and NLP result</span></a>
+    <a class="report-link" href="{{url_for('report_export',report_type='inventory')}}"><b>Inventory CSV</b><span>Current quantities, costs, source PO, and status</span></a>
+    <a class="report-link" href="{{url_for('report_export',report_type='issuance')}}"><b>RIS / ICS CSV</b><span>Issuance and assignment records</span></a>
+    <a class="report-link" href="{{url_for('report_export',report_type='audit')}}"><b>Audit Trail CSV</b><span>Complete activity history</span></a>
+  </div></div>
+</div>
+{% endblock %}

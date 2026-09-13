@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="toolbar page-head">
+  <div><h2>PPMP - {{ptype}}</h2></div>
+  <a class="btn" href="/ppmp">Back to PPMP Overview</a>
+</div>
+
+<form method="post" enctype="multipart/form-data" data-confirm="Continue with the selected {{ptype}} action? Verify the checked item identifiers and descriptions first.">
+  <div class="ocr-upload" style="margin-bottom:12px;">
+    <label for="ocr_upload_button">Upload OCR Document:</label>
+    <input type="file" name="ocr_file" id="ocr_upload_button" accept=".pdf,.png,.jpg,.jpeg">
+    <button type="submit" name="action" value="ocr" class="btn primary">Upload PPMP Source through OCR</button>
+  </div>
+
+  {% if session.get('ocr_text') %}
+  <div class="ocr-review">
+    <label>OCR Extracted Text (editable):</label>
+    <textarea name="ocr_text" rows="10">{{ session['ocr_text'] }}</textarea>
+  </div>
+  {% endif %}
+
+  <div class="card ppmp-card">
+    <div class="toolbar">
+      <div><h3>Available PPMP Items</h3></div>
+      <button class="btn primary" type="submit" name="action" value="generate_ppmp">Generate PPMP from Selected Items</button>
+    </div>
+
+    <div class="filters ppmp-filters">
+      <input placeholder="Search items..." onkeyup="filterRows(this.value)">
+      <a class="btn" href="{{ url_for('ppmp_type', ptype=ptype, refresh=1, _=range(100000,999999)|random) }}">Refresh {{ptype}} Item List</a>
+      <button type="button" class="btn secondary" id="edit_selected_btn">Review Selected Item Details</button>
+      <span class="muted count-chip">Available: {{data|length}}</span>
+    </div>
+
+    <div class="table-scroll ppmp-table-wrap">
+      <table class="table ppmp-table" id="ppmpTable">
+        <tr>
+          <th>Select</th><th>General Description and Objective</th><th>Type of Project</th>
+          <th>Quantity and Size of Project</th><th>Recommended Mode</th><th>Pre-Proc.</th>
+          <th>Start</th><th>End</th><th>Delivery / Implementation</th><th>Source</th>
+          <th>Estimated Budget</th><th>Docs</th><th>Remarks</th><th>Inventory Source</th>
+        </tr>
+        {% for x in data %}
+        <tr>
+          <td><input type="checkbox" name="rows" value="{{x._row}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="general_{{x._row}}" value="{{x.get('General Description and Objective of the Project to be Procured','')}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="type_{{x._row}}" value="{{x.get('Type of the Project to be Procured','')}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="quantity_{{x._row}}" value="{{x.get('Quantity and Size of the Project to be Procured','')}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="mode_{{x._row}}" value="{{x.get('Recommended Mode of Procurement','')}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="preproc_{{x._row}}" value="{{x.get('Pre-Procurement Conference Applicable (Yes/No)','')}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="start_{{x._row}}" value="{{x.get('Start of Procurement Activity','')}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="end_{{x._row}}" value="{{x.get('End of Procurement Activity','')}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="delivery_{{x._row}}" value="{{x.get('Expected Delivery/Implementation Period','')}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="source_{{x._row}}" value="{{x.get('Source of Funds','')}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="budget_{{x._row}}" value="{{x.get('Estimated Budget Allocation (Php)',0)|money}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="docs_{{x._row}}" value="{{x.get('Attached Supporting Documents','')}}"></td>
+          <td><input type="text" class="ppmp-editable" disabled name="remarks_{{x._row}}" value="{{x.get('Remarks','')}}"></td>
+          <td class="ppmp-source-cell">
+            {% if x.get('_Dataset Record ID') %}
+              <span class="id-chip subtle">{{x.get('_Source Item ID', 'SRC-INV-%06d'|format(x.get('_Dataset Record ID')|int))}}</span><br>
+              <span class="muted">{{x.get('_Dataset Source Sheet','')}} · Row {{x.get('_Dataset Source Row','')}}</span>
+            {% else %}
+              <span class="muted">Standard {{ptype}} PPMP item</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    {% if not data %}<div class="notice">No available rows found.</div>{% endif %}
+  </div>
+</form>
+
+<div id="ppmpEditModal" class="modal">
+  <div class="modal-content ppmp-editor-modal">
+    <button type="button" class="modal-x close-btn">&times;</button>
+    <div class="modal-head">
+      <div class="modal-icon">✎</div>
+      <div>
+        <h3>Edit Selected PPMP Item</h3>
+        <p class="muted">Only the PPMP items selected from the table are shown here.</p>
+      </div>
+    </div>
+
+    <form id="modalEditForm" method="post" action="{{ url_for('ppmp_edit_table', ptype=ptype) }}">
+      <div id="hiddenEditFields"></div>
+      <div class="selected-strip">
+        <label>Selected Item <span id="itemPosition">(1 of 1)</span></label>
+        <div class="selected-nav">
+          <select id="selectedItemSelect"></select>
+          <button type="button" class="btn small" id="prevItem">‹</button>
+          <button type="button" class="btn small" id="nextItem">›</button>
+        </div>
+      </div>
+
+      <div class="ppmp-editor-grid">
+        <label>General Description and Objective <input id="f_general"></label>
+        <label>Type of Project <input id="f_type"></label>
+        <label>Quantity and Size of Project <input id="f_quantity"></label>
+        <label>Recommended Mode <input id="f_mode"></label>
+        <label>Pre-Procurement <input id="f_preproc"></label>
+        <label>Start <input id="f_start"></label>
+        <label>End <input id="f_end"></label>
+        <label>Delivery / Implementation <input id="f_delivery"></label>
+        <label>Source of Funds <input id="f_source"></label>
+        <label>Estimated Budget <input id="f_budget"></label>
+        <label>Documents <input id="f_docs"></label>
+        <label class="full">Remarks <textarea id="f_remarks"></textarea></label>
+      </div>
+
+      <div class="modal-footer">
+        <span class="muted" id="selectedCountText"></span>
+        <div class="actions"><button type="button" class="btn close-btn-2">Cancel</button><button type="submit" class="btn primary">Save Changes</button></div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const fields = ['general','type','quantity','mode','preproc','start','end','delivery','source','budget','docs','remarks'];
+  let selectedItems = [];
+  let activeIndex = 0;
+
+  function filterRows(value) {
+    value = value.toLowerCase();
+    document.querySelectorAll('#ppmpTable tr').forEach(function (row, index) {
+      if (index === 0) return;
+      row.style.display = row.innerText.toLowerCase().includes(value) ? '' : 'none';
+    });
+  }
+  function cleanMoney(v){ return String(v || '').replace('₱','').replace(/,/g,'').trim(); }
+  function readRow(row){
+    const cb = row.querySelector('input[type="checkbox"]');
+    const item = { row: cb.value };
+    fields.forEach(f => {
+      const el = row.querySelector(`[name="${f}_${cb.value}"]`);
+      item[f] = el ? el.value : '';
+    });
+    item.budget = cleanMoney(item.budget);
+    return item;
+  }
+  function saveActive(){
+    if(!selectedItems.length) return;
+    fields.forEach(f => {
+      const el = document.getElementById('f_' + f);
+      selectedItems[activeIndex][f] = el ? el.value : '';
+    });
+  }
+  function loadActive(){
+    const item = selectedItems[activeIndex];
+    fields.forEach(f => {
+      const el = document.getElementById('f_' + f);
+      if(el) el.value = item[f] || '';
+    });
+    document.getElementById('selectedItemSelect').value = String(activeIndex);
+    document.getElementById('itemPosition').textContent = `(${activeIndex + 1} of ${selectedItems.length})`;
+    document.getElementById('selectedCountText').textContent = `${selectedItems.length} selected item(s)`;
+  }
+  function rebuildHidden(){
+    const box = document.getElementById('hiddenEditFields');
+    box.innerHTML = '';
+    selectedItems.forEach(item => {
+      box.insertAdjacentHTML('beforeend', `<input type="hidden" name="rows" value="${item.row}">`);
+      fields.forEach(f => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = `${f}_${item.row}`;
+        input.value = item[f] || '';
+        box.appendChild(input);
+      });
+    });
+  }
+  function openModal(){
+    selectedItems = [];
+    document.querySelectorAll('#ppmpTable tr').forEach((row, i) => {
+      if (i === 0) return;
+      const cb = row.querySelector('input[type="checkbox"]');
+      if (cb && cb.checked) selectedItems.push(readRow(row));
+    });
+    if (!selectedItems.length) { alert('Please select at least one PPMP item to edit.'); return; }
+    activeIndex = 0;
+    const sel = document.getElementById('selectedItemSelect');
+    sel.innerHTML = '';
+    selectedItems.forEach((item, i) => {
+      const opt = document.createElement('option');
+      opt.value = String(i);
+      opt.textContent = `${i + 1}. ${item.general || item.quantity || 'PPMP Item'}`;
+      sel.appendChild(opt);
+    });
+    loadActive();
+    document.getElementById('ppmpEditModal').style.display = 'block';
+  }
+  document.getElementById('edit_selected_btn').onclick = openModal;
+  document.getElementById('selectedItemSelect').onchange = function(){ saveActive(); activeIndex = Number(this.value); loadActive(); };
+  document.getElementById('prevItem').onclick = function(){ saveActive(); activeIndex = Math.max(0, activeIndex - 1); loadActive(); };
+  document.getElementById('nextItem').onclick = function(){ saveActive(); activeIndex = Math.min(selectedItems.length - 1, activeIndex + 1); loadActive(); };
+  document.getElementById('modalEditForm').onsubmit = function(){ saveActive(); rebuildHidden(); };
+  document.querySelectorAll('.close-btn,.close-btn-2').forEach(btn => btn.onclick = function(){ document.getElementById('ppmpEditModal').style.display = 'none'; });
+  window.onclick = function (event) { if (event.target === document.getElementById('ppmpEditModal')) document.getElementById('ppmpEditModal').style.display = 'none'; };
+</script>
+{% endblock %}

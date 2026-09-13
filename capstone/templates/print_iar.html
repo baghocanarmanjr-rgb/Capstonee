@@ -1,0 +1,6 @@
+<!doctype html><html><head><meta charset="utf-8"><title>{{row.no}}</title><link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}"></head><body><div class="print-page">
+<div class="print-head"><div>Republic of the Philippines</div><b>MUNICIPALITY OF ASUNCION</b><h1>INSPECTION AND ACCEPTANCE REPORT</h1></div>
+<table class="print-table"><tr><th>IAR Number</th><td>{{row.no}}</td><th>Date</th><td>{{row.created_at}}</td></tr><tr><th>PO Number</th><td>{{po.no}}</td><th>Supplier</th><td>{{po.supplier}}</td></tr><tr><th>Status</th><td colspan="3">{{row.status}}</td></tr></table>
+<h3>Delivered / Accepted Items</h3><table class="print-table"><tr><th>#</th><th>Item / Description</th><th>Quantity</th><th>Unit</th><th>Condition</th></tr>{% for i in items %}<tr><td>{{loop.index}}</td><td><b>{{i.get('item') or 'Item'}}</b><br>{{i.get('description') or ''}}</td><td>{{i.get('qty') or 1}}</td><td>{{i.get('unit') or 'unit'}}</td><td>Inspected and accepted</td></tr>{% endfor %}</table>
+<div class="sign-grid"><div class="sign"><p>Inspected by:</p><div class="esign">{{sig.iar_inspection[0]}}</div><b>{{sig.iar_inspection[1]}}</b></div><div class="sign"><p>Accepted by:</p><div class="esign">{{sig.iar_acceptance[0]}}</div><b>{{sig.iar_acceptance[1]}}</b></div></div>
+</div><script>window.print()</script></body></html>
