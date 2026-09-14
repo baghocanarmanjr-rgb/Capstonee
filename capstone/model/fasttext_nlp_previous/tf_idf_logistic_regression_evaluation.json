@@ -1,0 +1,251 @@
+{
+  "status": {
+    "accuracy": 0.8092613009922822,
+    "macro_f1": 0.8260223601774206,
+    "weighted_f1": 0.80935013701832,
+    "report": {
+      "Acceptable": {
+        "precision": 0.9481481481481482,
+        "recall": 0.6183574879227053,
+        "f1-score": 0.7485380116959064,
+        "support": 414.0
+      },
+      "Needs Review": {
+        "precision": 0.9629629629629629,
+        "recall": 0.9936305732484076,
+        "f1-score": 0.9780564263322884,
+        "support": 157.0
+      },
+      "Needs Recanvass": {
+        "precision": 0.5349794238683128,
+        "recall": 0.9027777777777778,
+        "f1-score": 0.6718346253229974,
+        "support": 144.0
+      },
+      "Reject": {
+        "precision": 0.8275862068965517,
+        "recall": 1.0,
+        "f1-score": 0.9056603773584906,
+        "support": 192.0
+      },
+      "accuracy": 0.8092613009922822,
+      "macro avg": {
+        "precision": 0.8184191854689938,
+        "recall": 0.8786914597372226,
+        "f1-score": 0.8260223601774206,
+        "support": 907.0
+      },
+      "weighted avg": {
+        "precision": 0.8595943850933776,
+        "recall": 0.8092613009922822,
+        "f1-score": 0.80935013701832,
+        "support": 907.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        256,
+        6,
+        113,
+        39
+      ],
+      [
+        0,
+        156,
+        0,
+        1
+      ],
+      [
+        14,
+        0,
+        130,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        192
+      ]
+    ]
+  },
+  "issue": {
+    "accuracy": 0.7761852260198456,
+    "macro_f1": 0.7244337165589844,
+    "weighted_f1": 0.769976042428504,
+    "report": {
+      "Requirement satisfied": {
+        "precision": 0.9776785714285714,
+        "recall": 0.5289855072463768,
+        "f1-score": 0.6865203761755486,
+        "support": 414.0
+      },
+      "Missing or ambiguous information": {
+        "precision": 0.9329268292682927,
+        "recall": 0.9745222929936306,
+        "f1-score": 0.9532710280373832,
+        "support": 157.0
+      },
+      "Below minimum": {
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1-score": 0.6666666666666666,
+        "support": 34.0
+      },
+      "Above maximum": {
+        "precision": 0.5166666666666667,
+        "recall": 1.0,
+        "f1-score": 0.6813186813186813,
+        "support": 31.0
+      },
+      "Exact or range mismatch": {
+        "precision": 0.515625,
+        "recall": 0.9850746268656716,
+        "f1-score": 0.676923076923077,
+        "support": 67.0
+      },
+      "Quantity or unit mismatch": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 11.0
+      },
+      "Specification mismatch": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "Different item": {
+        "precision": 0.7529880478087649,
+        "recall": 0.9895287958115183,
+        "f1-score": 0.8552036199095022,
+        "support": 191.0
+      },
+      "Missing item": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 1.0
+      },
+      "accuracy": 0.7761852260198456,
+      "macro avg": {
+        "precision": 0.6884316794635884,
+        "recall": 0.8309012469907997,
+        "f1-score": 0.7244337165589844,
+        "support": 907.0
+      },
+      "weighted avg": {
+        "precision": 0.8540382575134413,
+        "recall": 0.7761852260198456,
+        "f1-score": 0.769976042428504,
+        "support": 907.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        219,
+        11,
+        34,
+        29,
+        62,
+        0,
+        0,
+        59,
+        0
+      ],
+      [
+        1,
+        153,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        34,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        31,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        66,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        11,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        189,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    ]
+  },
+  "challenge": {
+    "status_accuracy": 0.75,
+    "issue_accuracy": 0.5
+  }
+}

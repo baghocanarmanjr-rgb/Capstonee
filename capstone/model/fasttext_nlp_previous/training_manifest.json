@@ -1,0 +1,327 @@
+{
+  "created_at_utc": "2026-07-27T14:43:20.538807+00:00",
+  "decision_mode": "AI_ONLY_FASTTEXT_DUAL_CLASSIFIER",
+  "deployed_model": "FastText + Logistic Regression",
+  "predictive_best_current_run": "DistilBERT Embeddings + Logistic Regression",
+  "selection_basis": "FastText was selected in the June three-approach model-selection phase. This notebook preserves that methodology, reevaluates TF-IDF, FastText, and frozen DistilBERT embeddings on the same expanded split, and exports the enhanced selected FastText model.",
+  "architecture": "Pair-aware FastText embeddings: PR vector + PO vector + absolute difference + elementwise interaction; separate trained Logistic Regression status and issue classifiers.",
+  "status_labels": [
+    "Acceptable",
+    "Needs Review",
+    "Needs Recanvass",
+    "Reject"
+  ],
+  "issue_labels": [
+    "Requirement satisfied",
+    "Missing or ambiguous information",
+    "Below minimum",
+    "Above maximum",
+    "Exact or range mismatch",
+    "Quantity or unit mismatch",
+    "Specification mismatch",
+    "Different item",
+    "Missing item"
+  ],
+  "fasttext_vector_size": 150,
+  "status_classifier_c": 4.0,
+  "issue_classifier_c": 4.0,
+  "training_rows": 6876,
+  "validation_rows": 845,
+  "test_rows": 907,
+  "data_sources": {
+    "coa_workbook": 4777,
+    "semantic_curriculum": 3831,
+    "staff_validated": 20
+  },
+  "model_comparison": [
+    {
+      "model": "DistilBERT Embeddings + Logistic Regression",
+      "status_accuracy": 0.9117971334068358,
+      "status_macro_f1": 0.9146054459375463,
+      "status_weighted_f1": 0.91548991033293,
+      "issue_accuracy": 0.9095920617420066,
+      "issue_macro_f1": 0.7976598536236842,
+      "false_acceptable_rate": 0.02028397565922921,
+      "critical_recall": 0.9702380952380952,
+      "challenge_status_accuracy": 0.875,
+      "challenge_issue_accuracy": 0.625
+    },
+    {
+      "model": "FastText + Logistic Regression",
+      "status_accuracy": 0.886438809261301,
+      "status_macro_f1": 0.8937796628227146,
+      "status_weighted_f1": 0.892027643263147,
+      "issue_accuracy": 0.8754134509371555,
+      "issue_macro_f1": 0.7723230833250236,
+      "false_acceptable_rate": 0.032454361054766734,
+      "critical_recall": 0.9553571428571429,
+      "challenge_status_accuracy": 0.625,
+      "challenge_issue_accuracy": 0.625
+    },
+    {
+      "model": "TF-IDF + Logistic Regression",
+      "status_accuracy": 0.8092613009922822,
+      "status_macro_f1": 0.8260223601774206,
+      "status_weighted_f1": 0.80935013701832,
+      "issue_accuracy": 0.7761852260198456,
+      "issue_macro_f1": 0.7244337165589844,
+      "false_acceptable_rate": 0.028397565922920892,
+      "critical_recall": 0.9583333333333334,
+      "challenge_status_accuracy": 0.75,
+      "challenge_issue_accuracy": 0.5
+    }
+  ],
+  "fasttext_status_evaluation": {
+    "accuracy": 0.886438809261301,
+    "macro_f1": 0.8937796628227146,
+    "weighted_f1": 0.892027643263147,
+    "report": {
+      "Acceptable": {
+        "precision": 0.9534883720930233,
+        "recall": 0.7922705314009661,
+        "f1-score": 0.8654353562005277,
+        "support": 414.0
+      },
+      "Needs Review": {
+        "precision": 1.0,
+        "recall": 0.9936305732484076,
+        "f1-score": 0.9968051118210862,
+        "support": 157.0
+      },
+      "Needs Recanvass": {
+        "precision": 0.602803738317757,
+        "recall": 0.8958333333333334,
+        "f1-score": 0.7206703910614525,
+        "support": 144.0
+      },
+      "Reject": {
+        "precision": 0.9896373056994818,
+        "recall": 0.9947916666666666,
+        "f1-score": 0.9922077922077922,
+        "support": 192.0
+      },
+      "accuracy": 0.886438809261301,
+      "macro avg": {
+        "precision": 0.8864823540275655,
+        "recall": 0.9191315261623434,
+        "f1-score": 0.8937796628227146,
+        "support": 907.0
+      },
+      "weighted avg": {
+        "precision": 0.9135152007260962,
+        "recall": 0.886438809261301,
+        "f1-score": 0.892027643263147,
+        "support": 907.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        328,
+        0,
+        85,
+        1
+      ],
+      [
+        1,
+        156,
+        0,
+        0
+      ],
+      [
+        14,
+        0,
+        129,
+        1
+      ],
+      [
+        1,
+        0,
+        0,
+        191
+      ]
+    ]
+  },
+  "fasttext_issue_evaluation": {
+    "accuracy": 0.8754134509371555,
+    "macro_f1": 0.7723230833250236,
+    "weighted_f1": 0.8835845549154451,
+    "report": {
+      "Requirement satisfied": {
+        "precision": 0.9871382636655949,
+        "recall": 0.7415458937198067,
+        "f1-score": 0.8468965517241379,
+        "support": 414.0
+      },
+      "Missing or ambiguous information": {
+        "precision": 1.0,
+        "recall": 0.9936305732484076,
+        "f1-score": 0.9968051118210862,
+        "support": 157.0
+      },
+      "Below minimum": {
+        "precision": 0.5666666666666667,
+        "recall": 1.0,
+        "f1-score": 0.723404255319149,
+        "support": 34.0
+      },
+      "Above maximum": {
+        "precision": 0.543859649122807,
+        "recall": 1.0,
+        "f1-score": 0.7045454545454546,
+        "support": 31.0
+      },
+      "Exact or range mismatch": {
+        "precision": 0.5333333333333333,
+        "recall": 0.9552238805970149,
+        "f1-score": 0.6844919786096256,
+        "support": 67.0
+      },
+      "Quantity or unit mismatch": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 11.0
+      },
+      "Specification mismatch": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "Different item": {
+        "precision": 0.9947643979057592,
+        "recall": 0.9947643979057592,
+        "f1-score": 0.9947643979057592,
+        "support": 191.0
+      },
+      "Missing item": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 1.0
+      },
+      "accuracy": 0.8754134509371555,
+      "macro avg": {
+        "precision": 0.7361958122993513,
+        "recall": 0.8539071939412209,
+        "f1-score": 0.7723230833250236,
+        "support": 907.0
+      },
+      "weighted avg": {
+        "precision": 0.9256172990963211,
+        "recall": 0.8754134509371555,
+        "f1-score": 0.8835845549154451,
+        "support": 907.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        307,
+        0,
+        26,
+        25,
+        56,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        156,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        34,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        31,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        2,
+        0,
+        0,
+        1,
+        64,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        11,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        190,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    ]
+  },
+  "semantic_challenge_evaluation": {
+    "status_accuracy": 0.625,
+    "issue_accuracy": 0.625
+  },
+  "runtime_rules_used": false,
+  "runtime_hybrid_scoring_used": false,
+  "runtime_similarity_threshold_used": false,
+  "runtime_fallback_model_used": false
+}
