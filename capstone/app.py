@@ -1464,11 +1464,32 @@ def dashboard():
         'po': q('select count(*) c from po where status<>"Approved"', one=True)['c'],
         'nlp': q('select count(*) c from nlp where coalesce(status,"")<>"Approved"', one=True)['c'],
         'iar': q('select count(*) c from iar where status<>"Approved"', one=True)['c'],
+        'ris_ics': q('select count(*) c from ris_ics where status<>"Approved"', one=True)['c'],
     }
+    workflow_stages = []
+    for label, key, endpoint in [
+        ('PPMP', 'ppmp', 'ppmp_home'), ('APP', 'app', 'app_plan'),
+        ('Purchase Request', 'pr', 'pr'), ('AOQ', 'aoq', 'aoq'),
+        ('Purchase Order', 'po', 'po'), ('NLP Verification', 'nlp', 'nlp'),
+        ('IAR / AIR', 'iar', 'iar'), ('Inventory', 'inventory', 'inventory'),
+        ('RIS / ICS', 'ris_ics', 'ris_ics'),
+    ]:
+        count = stats[key]
+        if count == 0:
+            status, status_class = 'Not started', 'info'
+        elif pending.get(key, 0):
+            status, status_class = 'In progress', 'warn'
+        else:
+            status, status_class = 'Completed', 'ok'
+        workflow_stages.append({
+            'label': label, 'endpoint': endpoint, 'count': count,
+            'status': status, 'status_class': status_class,
+        })
     recent = q('select * from audit_trail order by id desc limit 10')
     model_state = trained_nlp_model_status()
     return render_template('dashboard.html', active='dashboard', stats=stats, pending=pending,
-                           recent=recent, model_state=model_state, title='Dashboard')
+                           workflow_stages=workflow_stages, recent=recent,
+                           model_state=model_state, title='Dashboard')
 
 @app.route('/excel-status')
 def excel_status():
@@ -2760,10 +2781,44 @@ def iar_print(id):
 
 @app.route('/inventory')
 def inventory():
-    rows = q('select * from inventory order by id desc')
+    search_text = (request.args.get('q') or '').strip()
+    category_filter = (request.args.get('category') or '').strip()
+    stock_filter = (request.args.get('stock') or '').strip().lower()
+    all_rows = [dict(row) for row in q('select * from inventory order by id desc')]
+
+    def stock_state(row):
+        quantity = to_float(row.get('qty'))
+        if quantity <= 0:
+            return 'Out of stock'
+        if quantity <= 5:
+            return 'Low stock'
+        return 'In stock'
+
+    for row in all_rows:
+        row['stock_state'] = stock_state(row)
+
+    categories = sorted({str(row.get('category') or '').strip() for row in all_rows if row.get('category')})
+    normalized_query = search_text.lower()
+    rows = [
+        row for row in all_rows
+        if (not normalized_query or normalized_query in ' '.join(str(row.get(key) or '') for key in ('item_code', 'item', 'description', 'source_po')).lower())
+        and (not category_filter or row.get('category') == category_filter)
+        and (not stock_filter or row['stock_state'].lower().startswith(stock_filter))
+    ]
+    stock_summary = {
+        'total': len(all_rows),
+        'in_stock': sum(row['stock_state'] == 'In stock' for row in all_rows),
+        'low_stock': sum(row['stock_state'] == 'Low stock' for row in all_rows),
+        'out_of_stock': sum(row['stock_state'] == 'Out of stock' for row in all_rows),
+    }
     transactions = q('''select t.*, i.item_code, i.item from inventory_transactions t
                         left join inventory i on i.id=t.inventory_id order by t.id desc limit 50''')
-    return render_template('inventory.html', active='inventory', rows=rows, transactions=transactions, title='Inventory')
+    return render_template(
+        'inventory.html', active='inventory', rows=rows, transactions=transactions,
+        title='Inventory', categories=categories, search_text=search_text,
+        category_filter=category_filter, stock_filter=stock_filter,
+        stock_summary=stock_summary,
+    )
 
 @app.route('/ris-ics', methods=['GET','POST'])
 def ris_ics():
@@ -3012,5 +3067,3 @@ if __name__ == '__main__':
         print('Waitress is not installed. Run: pip install -r requirements.txt')
         print('Fallback server started with debug disabled.')
         app.run(debug=False, host='127.0.0.1', port=5000)
-
-

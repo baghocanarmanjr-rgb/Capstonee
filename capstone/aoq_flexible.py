@@ -390,6 +390,40 @@ def _record_from_row(row: List[Any], mapping: Dict[int, str]) -> Dict[str, Any]:
     return rec
 
 
+def _is_table_heading_or_total(row: List[Any], rec: Dict[str, Any]) -> bool:
+    """Keep repeated table headings and summary rows out of AOQ results."""
+    cells = [_clean(cell) for cell in row if _clean(cell)]
+    joined = _norm(" ".join(cells))
+    first_cell = _norm(row[0] if row else "")
+    if not joined:
+        return True
+    if first_cell in {"total", "grand total", "overall total", "total amount", "grand total amount"}:
+        return True
+    if joined in {"total", "grand total", "overall total", "total amount", "grand total amount"}:
+        return True
+    header_matches = sum(1 for cell in cells if _map_header(cell))
+    if header_matches >= 2:
+        return True
+    supplier = _norm(rec.get("supplier"))
+    item = _norm(rec.get("item") or rec.get("description"))
+    if supplier in {"supplier", "supplier name", "bidder", "vendor", "company"}:
+        return True
+    if item in {"item", "item name", "description", "particulars", "specification"}:
+        return True
+    return False
+
+
+def _records_quality(records: List[Dict[str, Any]]) -> int:
+    """Prefer the parser that found the most usable supplier, item, and price data."""
+    score = 0
+    for rec in records:
+        score += 2 * int(bool(_clean(rec.get("supplier"))))
+        score += 2 * int(bool(_clean(rec.get("item") or rec.get("description"))))
+        score += int(bool(_number(rec.get("qty"))))
+        score += 2 * int(bool(_number(rec.get("unit_cost")) or _number(rec.get("amount"))))
+    return score
+
+
 def _parse_row_table(rows: List[List[Any]], source: str) -> List[Dict[str, Any]]:
     header_idx, mapping, score = _best_header(rows)
     if header_idx < 0 or score < 5:
@@ -398,15 +432,14 @@ def _parse_row_table(rows: List[List[Any]], source: str) -> List[Dict[str, Any]]
     last_supplier = ""
     for row in rows[header_idx + 1:]:
         rec = _record_from_row(row, mapping)
+        if _is_table_heading_or_total(row, rec):
+            continue
         if not rec.get("supplier") and last_supplier and (rec.get("item") or rec.get("description")):
             rec["supplier"] = last_supplier
         if rec.get("supplier"):
             last_supplier = rec["supplier"]
         meaningful = rec.get("supplier") or rec.get("item") or rec.get("description") or rec.get("amount")
         if not meaningful:
-            continue
-        normalized_join = _norm(" ".join(_clean(x) for x in row))
-        if normalized_join in {"total", "grand total"}:
             continue
         rec["source"] = source
         records.append(rec)
@@ -667,7 +700,7 @@ def build_preview(document: Dict[str, Any], pr_items: List[Dict[str, Any]]) -> D
             continue
         row_records = _parse_row_table(rows, table.get("source") or "Detected table")
         column_records = _parse_column_table(rows, table.get("source") or "Detected table")
-        chosen = column_records if len(column_records) > len(row_records) else row_records
+        chosen = column_records if _records_quality(column_records) > _records_quality(row_records) else row_records
         if chosen:
             records.extend(chosen)
             parsed_sources.append(table.get("source") or "Detected table")
@@ -705,10 +738,10 @@ def build_preview(document: Dict[str, Any], pr_items: List[Dict[str, Any]]) -> D
     elif winner_index < 0:
         warnings.append("No unambiguous winning supplier was found. Select the official winner during review.")
 
-    offer_items = suppliers[winner_index]["items"] if winner_index >= 0 else (suppliers[0]["items"] if suppliers else [])
+    offer_items = suppliers[winner_index]["items"] if winner_index >= 0 else []
     if not offer_items:
         offer_items = _pr_fallback_items(pr_items)
-        warnings.append("Winning offer line items were not clearly detected; linked PR items were shown as editable placeholders.")
+        warnings.append("No official winner was selected from the uploaded AOQ. Linked PR items were shown as editable placeholders instead of using another supplier's quotation.")
 
     found_fields = 0
     total_fields = 6

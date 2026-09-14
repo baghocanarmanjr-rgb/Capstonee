@@ -1,10 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="toolbar"><div><h2>Live Inventory</h2><p class="muted">Items enter Inventory after IAR approval. RIS/ICS approval deducts or assigns quantities.</p></div><a class="btn" href="{{url_for('ppmp_dataset')}}">Open Planning Source Workbook</a></div>
+<div class="grid grid-4" style="margin-bottom:16px">
+  <div class="card kpi"><div><div class="num">{{stock_summary.total}}</div><div class="label">Total inventory items</div></div><div class="kicon">#</div></div>
+  <div class="card kpi"><div><div class="num">{{stock_summary.in_stock}}</div><div class="label">In stock</div></div><div class="kicon">OK</div></div>
+  <div class="card kpi"><div><div class="num">{{stock_summary.low_stock}}</div><div class="label">Low-stock alerts</div></div><div class="kicon">!</div></div>
+  <div class="card kpi"><div><div class="num">{{stock_summary.out_of_stock}}</div><div class="label">Out of stock</div></div><div class="kicon">0</div></div>
+</div>
 <div class="card">
   <div class="step-title"><span>8</span><div><h3>Received Inventory Items</h3><p class="muted">Available quantity is the current balance after approved issuances.</p></div></div>
-  <div class="table-scroll"><table class="table"><tr><th>Inventory ID</th><th>Item / Description</th><th>Category</th><th>Available Quantity</th><th>Unit Cost</th><th>Source PO</th><th>Status</th></tr>
-  {% for r in rows %}<tr><td><span class="id-chip">{{r.item_code or ('INV-' ~ r.id)}}</span></td><td><b>{{r.item}}</b><br><span class="muted">{{r.description or 'No additional description'}}</span></td><td>{{r.category}}</td><td><b>{{r.qty}}</b> {{r.unit}}</td><td>{{r.unit_cost|money if r.unit_cost else '—'}}</td><td>{{r.source_po or '—'}}</td><td><span class="badge {{'ok' if r.qty and r.qty > 0 else 'warn'}}">{{r.status}}</span></td></tr>{% else %}<tr><td colspan="7" class="center muted">No received items yet. Approve an IAR to add inventory.</td></tr>{% endfor %}
+  <form method="get" class="filters" aria-label="Inventory filters">
+    <input name="q" value="{{search_text}}" placeholder="Search item, description, ID, or source PO">
+    <select name="category"><option value="">All categories</option>{% for category in categories %}<option value="{{category}}" {{'selected' if category_filter==category}}>{{category}}</option>{% endfor %}</select>
+    <select name="stock"><option value="">All stock levels</option><option value="in stock" {{'selected' if stock_filter=='in stock'}}>In stock</option><option value="low stock" {{'selected' if stock_filter=='low stock'}}>Low stock (5 or fewer)</option><option value="out of stock" {{'selected' if stock_filter=='out of stock'}}>Out of stock</option></select>
+    <button class="btn primary" type="submit">Apply filters</button><a class="btn" href="{{url_for('inventory')}}">Reset</a>
+  </form>
+  <p class="muted">{{rows|length}} item(s) shown. Low stock means 5 or fewer available units.</p>
+  <div class="table-scroll"><table class="table"><tr><th>Inventory ID</th><th>Item / Description</th><th>Category</th><th>Available Quantity</th><th>Stock Alert</th><th>Unit Cost</th><th>Source PO</th><th>Status</th></tr>
+  {% for r in rows %}<tr><td><span class="id-chip">{{r.item_code or ('INV-' ~ r.id)}}</span></td><td><b>{{r.item}}</b><br><span class="muted">{{r.description or 'No additional description'}}</span></td><td>{{r.category}}</td><td><b>{{r.qty}}</b> {{r.unit}}</td><td><span class="badge {{'ok' if r.stock_state=='In stock' else ('warn' if r.stock_state=='Low stock' else 'bad')}}">{{r.stock_state}}</span></td><td>{{r.unit_cost|money if r.unit_cost else '—'}}</td><td>{{r.source_po or '—'}}</td><td><span class="badge {{'ok' if r.qty and r.qty > 0 else 'warn'}}">{{r.status}}</span></td></tr>{% else %}<tr><td colspan="8" class="center muted">No inventory items match the selected filters. Approve an IAR to add inventory.</td></tr>{% endfor %}
   </table></div>
 </div>
 <div class="card" style="margin-top:16px">

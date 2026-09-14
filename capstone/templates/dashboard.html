@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="toolbar">
-  <div><h2>System Dashboard</h2><p class="muted">Track the complete procurement and property workflow from PPMP to RIS/ICS.</p></div>
+  <div><h2>System Dashboard</h2></div>
   <span class="badge {{ 'ok' if model_state.active else 'warn' }}">NLP Model: {{ 'Active' if model_state.active else 'Not Installed' }}</span>
 </div>
 
@@ -9,6 +9,19 @@
   {% for label, endpoint in [('PPMP','ppmp_home'),('APP','app_plan'),('PR','pr'),('AOQ','aoq'),('PO','po'),('NLP','nlp'),('IAR','iar'),('Inventory','inventory'),('RIS/ICS','ris_ics')] %}
     <a class="workflow-node" href="{{ url_for(endpoint) }}"><b>{{ loop.index }}</b><span>{{ label }}</span></a>{% if not loop.last %}<span class="workflow-arrow">→</span>{% endif %}
   {% endfor %}
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="toolbar"><h3>Workflow Status Center</h3><span class="badge info">Live status</span></div>
+  <div class="grid grid-3">
+    {% for stage in workflow_stages %}
+    <div class="card">
+      <div class="toolbar"><h3>{{ stage.label }}</h3><span class="badge {{stage.status_class}}">{{stage.status}}</span></div>
+      <div class="kpi"><div><div class="num">{{stage.count}}</div><div class="label">record{{'' if stage.count==1 else 's'}}</div></div></div>
+      <div class="actions" style="margin-top:14px"><a class="btn small" href="{{url_for(stage.endpoint)}}">Open {{stage.label}}</a></div>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 
 <div class="grid grid-4" style="margin-top:16px">
@@ -26,15 +39,7 @@
       {% endfor %}
     </table>
   </div>
-  <div class="card">
-    <h3>Important Workflow Rules</h3>
-    <div class="rule-list">
-      <p><b>PR comes from an approved APP.</b> This keeps PPMP, APP, and PR linked.</p>
-      <p><b>PO comes from the approved AOQ winning offer.</b> It is not copied directly from the PR.</p>
-      <p><b>NLP runs only after PO approval.</b> You may complete the process through PO before running the model.</p>
-      <p><b>Inventory is updated only after IAR approval.</b> RIS/ICS approval then deducts or assigns stock.</p>
-    </div>
-  </div>
+  <div class="card"><h3>System Status</h3><span class="badge {{ 'ok' if model_state.active else 'warn' }}">NLP Model: {{ 'Active' if model_state.active else 'Not Installed' }}</span></div>
 </div>
 
 <div class="card" style="margin-top:16px">
