@@ -1,0 +1,36 @@
+{
+  "status_labels": [
+    "Acceptable",
+    "Needs Review",
+    "Needs Recanvass",
+    "Reject"
+  ],
+  "issue_labels": [
+    "Requirement satisfied",
+    "Missing or ambiguous information",
+    "Below minimum",
+    "Above maximum",
+    "Exact or range mismatch",
+    "Quantity or unit mismatch",
+    "Specification mismatch",
+    "Different item",
+    "Missing item"
+  ],
+  "status2id": {
+    "Acceptable": 0,
+    "Needs Review": 1,
+    "Needs Recanvass": 2,
+    "Reject": 3
+  },
+  "issue2id": {
+    "Requirement satisfied": 0,
+    "Missing or ambiguous information": 1,
+    "Below minimum": 2,
+    "Above maximum": 3,
+    "Exact or range mismatch": 4,
+    "Quantity or unit mismatch": 5,
+    "Specification mismatch": 6,
+    "Different item": 7,
+    "Missing item": 8
+  }
+}

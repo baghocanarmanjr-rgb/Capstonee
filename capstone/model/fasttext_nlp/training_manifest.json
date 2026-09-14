@@ -1,0 +1,650 @@
+{
+  "created_at_utc": "2026-07-27T17:28:23.331505+00:00",
+  "decision_mode": "AI_ONLY_FASTTEXT_DUAL_CLASSIFIER",
+  "deployed_model": "FastText + Logistic Regression",
+  "feature_schema": "FASTTEXT_NUMERIC_RELATION_V2",
+  "feature_module": "fasttext_feature_schema_v2.py",
+  "feature_dimension": 659,
+  "issue_feature_dimension": 659,
+  "status_feature_dimension": 668,
+  "status_classifier_uses_issue_probabilities": true,
+  "numeric_feature_names": [
+    "pr_number_count_scaled",
+    "po_number_count_scaled",
+    "comparable_measurement_found",
+    "pr_numeric_missing",
+    "po_numeric_missing",
+    "same_measurement_group",
+    "unit_conversion_used",
+    "cue_minimum",
+    "cue_maximum",
+    "cue_exact",
+    "cue_range",
+    "cue_unspecified",
+    "log_pr_low",
+    "log_pr_high",
+    "log_po_value",
+    "signed_log_po_minus_low",
+    "signed_log_po_minus_high",
+    "abs_log_po_minus_low",
+    "abs_log_po_minus_high",
+    "ratio_po_to_low_clipped",
+    "ratio_po_to_high_clipped",
+    "po_ge_low",
+    "po_le_low",
+    "po_eq_low",
+    "po_between",
+    "po_below_low",
+    "po_above_high",
+    "pr_quantity_cue",
+    "po_quantity_cue",
+    "pr_keyword_ssd",
+    "po_keyword_ssd",
+    "pr_keyword_hdd",
+    "po_keyword_hdd",
+    "pr_keyword_memory",
+    "po_keyword_memory",
+    "pr_keyword_weight",
+    "po_keyword_weight",
+    "pr_keyword_power",
+    "po_keyword_power",
+    "pr_keyword_ports",
+    "po_keyword_ports",
+    "pr_keyword_warranty",
+    "po_keyword_warranty",
+    "pr_keyword_storage",
+    "po_keyword_storage",
+    "minimum_satisfied_interaction",
+    "minimum_violated_interaction",
+    "maximum_satisfied_interaction",
+    "maximum_violated_interaction",
+    "exact_satisfied_interaction",
+    "exact_violated_interaction",
+    "range_satisfied_interaction",
+    "range_violated_interaction",
+    "required_numeric_missing_interaction",
+    "ssd_confirmed_interaction",
+    "ssd_ambiguous_interaction",
+    "ssd_hdd_mismatch_interaction",
+    "quantity_satisfied_interaction",
+    "quantity_mismatch_interaction"
+  ],
+  "predictive_best_current_run": "FastText + Logistic Regression",
+  "selection_basis": "FastText was selected in the June three-approach model-selection phase. This run compares TF-IDF, enhanced FastText, and frozen DistilBERT on the same group-held-out split.",
+  "architecture": "FastText PR vector + PO vector + signed difference + absolute difference + elementwise interaction, plus structured numeric/measurement relationship features. The issue classifier predicts first; its probability vector is appended as learned input to the trained status classifier.",
+  "numeric_relation_features_are_classifier_inputs_only": true,
+  "runtime_rules_used": false,
+  "runtime_hybrid_scoring_used": false,
+  "runtime_similarity_threshold_used": false,
+  "runtime_fallback_model_used": false,
+  "status_labels": [
+    "Acceptable",
+    "Needs Review",
+    "Needs Recanvass",
+    "Reject"
+  ],
+  "issue_labels": [
+    "Requirement satisfied",
+    "Missing or ambiguous information",
+    "Below minimum",
+    "Above maximum",
+    "Exact or range mismatch",
+    "Quantity or unit mismatch",
+    "Specification mismatch",
+    "Different item",
+    "Missing item"
+  ],
+  "fasttext_vector_size": 120,
+  "fasttext_bucket": 100000,
+  "status_classifier_c": 1.0,
+  "issue_classifier_c": 4.0,
+  "training_rows": 2850,
+  "validation_rows": 341,
+  "test_rows": 357,
+  "data_sources": {
+    "semantic_curriculum": 2584,
+    "coa_workbook": 898,
+    "curated_seed_requires_staff_review": 66
+  },
+  "quality_gate": {
+    "status_macro_f1_min": 0.8,
+    "issue_macro_f1_min": 0.75,
+    "false_acceptable_rate_max": 0.08,
+    "critical_recall_min": 0.9,
+    "challenge_status_accuracy_min": 1.0,
+    "challenge_issue_accuracy_min": 1.0
+  },
+  "quality_gate_passed": true,
+  "model_comparison": [
+    {
+      "model": "FastText + Logistic Regression",
+      "status_accuracy": 0.9971988795518207,
+      "status_macro_f1": 0.9978335830730625,
+      "status_weighted_f1": 0.9971965027638757,
+      "issue_accuracy": 0.9943977591036415,
+      "issue_macro_f1": 0.9898766301644,
+      "issue_weighted_f1": 0.9943000996746235,
+      "false_acceptable_rate": 0.004672897196261682,
+      "critical_recall": 0.993103448275862,
+      "challenge_status_accuracy": 1.0,
+      "challenge_issue_accuracy": 1.0
+    },
+    {
+      "model": "DistilBERT Embeddings + Logistic Regression",
+      "status_accuracy": 0.988795518207283,
+      "status_macro_f1": 0.9847022699417493,
+      "status_weighted_f1": 0.9888270943944673,
+      "issue_accuracy": 0.9831932773109243,
+      "issue_macro_f1": 0.9813928056822113,
+      "issue_weighted_f1": 0.9831904934504113,
+      "false_acceptable_rate": 0.004672897196261682,
+      "critical_recall": 0.993103448275862,
+      "challenge_status_accuracy": 1.0,
+      "challenge_issue_accuracy": 1.0
+    },
+    {
+      "model": "TF-IDF + Logistic Regression",
+      "status_accuracy": 0.927170868347339,
+      "status_macro_f1": 0.9112587757665478,
+      "status_weighted_f1": 0.9314453242436872,
+      "issue_accuracy": 0.8935574229691877,
+      "issue_macro_f1": 0.9331442494920138,
+      "issue_weighted_f1": 0.9043064182208201,
+      "false_acceptable_rate": 0.009345794392523364,
+      "critical_recall": 0.993103448275862,
+      "challenge_status_accuracy": 1.0,
+      "challenge_issue_accuracy": 1.0
+    }
+  ],
+  "fasttext_status_evaluation": {
+    "accuracy": 0.9971988795518207,
+    "macro_f1": 0.9978335830730625,
+    "weighted_f1": 0.9971965027638757,
+    "report": {
+      "Acceptable": {
+        "precision": 0.9930555555555556,
+        "recall": 1.0,
+        "f1-score": 0.9965156794425087,
+        "support": 143.0
+      },
+      "Needs Review": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 69.0
+      },
+      "Needs Recanvass": {
+        "precision": 1.0,
+        "recall": 0.9896907216494846,
+        "f1-score": 0.9948186528497409,
+        "support": 97.0
+      },
+      "Reject": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 48.0
+      },
+      "accuracy": 0.9971988795518207,
+      "macro avg": {
+        "precision": 0.9982638888888888,
+        "recall": 0.9974226804123711,
+        "f1-score": 0.9978335830730625,
+        "support": 357.0
+      },
+      "weighted avg": {
+        "precision": 0.9972183317771554,
+        "recall": 0.9971988795518207,
+        "f1-score": 0.9971965027638757,
+        "support": 357.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        143,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        69,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        96,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        48
+      ]
+    ]
+  },
+  "fasttext_issue_evaluation": {
+    "accuracy": 0.9943977591036415,
+    "macro_f1": 0.9898766301644,
+    "weighted_f1": 0.9943000996746235,
+    "report": {
+      "Requirement satisfied": {
+        "precision": 0.993006993006993,
+        "recall": 0.993006993006993,
+        "f1-score": 0.993006993006993,
+        "support": 143.0
+      },
+      "Missing or ambiguous information": {
+        "precision": 0.9857142857142858,
+        "recall": 1.0,
+        "f1-score": 0.9928057553956835,
+        "support": 69.0
+      },
+      "Below minimum": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 16.0
+      },
+      "Above maximum": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 26.0
+      },
+      "Exact or range mismatch": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 44.0
+      },
+      "Quantity or unit mismatch": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 4.0
+      },
+      "Specification mismatch": {
+        "precision": 1.0,
+        "recall": 0.8571428571428571,
+        "f1-score": 0.9230769230769231,
+        "support": 7.0
+      },
+      "Different item": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 41.0
+      },
+      "Missing item": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 7.0
+      },
+      "accuracy": 0.9943977591036415,
+      "macro avg": {
+        "precision": 0.9976356976356977,
+        "recall": 0.9833499833499835,
+        "f1-score": 0.9898766301644,
+        "support": 357.0
+      },
+      "weighted avg": {
+        "precision": 0.994437775110044,
+        "recall": 0.9943977591036415,
+        "f1-score": 0.9943000996746235,
+        "support": 357.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        142,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        69,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        16,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        26,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        44,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        41,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        7
+      ]
+    ]
+  },
+  "semantic_challenge_evaluation": {
+    "status_accuracy": 1.0,
+    "issue_accuracy": 1.0,
+    "details": [
+      {
+        "case": 1,
+        "pr_text": "Laptop with at least 8 GB RAM",
+        "po_text": "Laptop with 16 GB system memory",
+        "expected_status": "Acceptable",
+        "predicted_status": "Acceptable",
+        "status_correct": true,
+        "expected_issue": "Requirement satisfied",
+        "predicted_issue": "Requirement satisfied",
+        "issue_correct": true
+      },
+      {
+        "case": 2,
+        "pr_text": "Laptop with minimum 8 GB memory",
+        "po_text": "Laptop with 4 GB RAM",
+        "expected_status": "Needs Recanvass",
+        "predicted_status": "Needs Recanvass",
+        "status_correct": true,
+        "expected_issue": "Below minimum",
+        "predicted_issue": "Below minimum",
+        "issue_correct": true
+      },
+      {
+        "case": 3,
+        "pr_text": "Laptop with minimum 12 GB installed memory",
+        "po_text": "Laptop with 24 GB RAM",
+        "expected_status": "Acceptable",
+        "predicted_status": "Acceptable",
+        "status_correct": true,
+        "expected_issue": "Requirement satisfied",
+        "predicted_issue": "Requirement satisfied",
+        "issue_correct": true
+      },
+      {
+        "case": 4,
+        "pr_text": "Laptop with minimum 12 GB installed memory",
+        "po_text": "Laptop with 6 GB RAM",
+        "expected_status": "Needs Recanvass",
+        "predicted_status": "Needs Recanvass",
+        "status_correct": true,
+        "expected_issue": "Below minimum",
+        "predicted_issue": "Below minimum",
+        "issue_correct": true
+      },
+      {
+        "case": 5,
+        "pr_text": "Laptop with minimum 512 GB SSD",
+        "po_text": "Laptop with 1 TB solid-state drive",
+        "expected_status": "Acceptable",
+        "predicted_status": "Acceptable",
+        "status_correct": true,
+        "expected_issue": "Requirement satisfied",
+        "predicted_issue": "Requirement satisfied",
+        "issue_correct": true
+      },
+      {
+        "case": 6,
+        "pr_text": "Laptop with minimum 512 GB SSD",
+        "po_text": "Laptop with 512 GB storage",
+        "expected_status": "Needs Review",
+        "predicted_status": "Needs Review",
+        "status_correct": true,
+        "expected_issue": "Missing or ambiguous information",
+        "predicted_issue": "Missing or ambiguous information",
+        "issue_correct": true
+      },
+      {
+        "case": 7,
+        "pr_text": "Laptop with minimum 512 GB SSD",
+        "po_text": "Laptop with 1 TB hard disk drive",
+        "expected_status": "Needs Recanvass",
+        "predicted_status": "Needs Recanvass",
+        "status_correct": true,
+        "expected_issue": "Specification mismatch",
+        "predicted_issue": "Specification mismatch",
+        "issue_correct": true
+      },
+      {
+        "case": 8,
+        "pr_text": "Equipment weight must not exceed 5 kg",
+        "po_text": "Equipment weight is 3 kg",
+        "expected_status": "Acceptable",
+        "predicted_status": "Acceptable",
+        "status_correct": true,
+        "expected_issue": "Requirement satisfied",
+        "predicted_issue": "Requirement satisfied",
+        "issue_correct": true
+      },
+      {
+        "case": 9,
+        "pr_text": "Equipment weight must not exceed 5 kg",
+        "po_text": "Equipment weight is 7000 g",
+        "expected_status": "Needs Recanvass",
+        "predicted_status": "Needs Recanvass",
+        "status_correct": true,
+        "expected_issue": "Above maximum",
+        "predicted_issue": "Above maximum",
+        "issue_correct": true
+      },
+      {
+        "case": 10,
+        "pr_text": "Power consumption must not exceed 100 watts",
+        "po_text": "Power draw is 75 watts",
+        "expected_status": "Acceptable",
+        "predicted_status": "Acceptable",
+        "status_correct": true,
+        "expected_issue": "Requirement satisfied",
+        "predicted_issue": "Requirement satisfied",
+        "issue_correct": true
+      },
+      {
+        "case": 11,
+        "pr_text": "Power consumption must not exceed 100 watts",
+        "po_text": "Power draw is 150 watts",
+        "expected_status": "Needs Recanvass",
+        "predicted_status": "Needs Recanvass",
+        "status_correct": true,
+        "expected_issue": "Above maximum",
+        "predicted_issue": "Above maximum",
+        "issue_correct": true
+      },
+      {
+        "case": 12,
+        "pr_text": "Network switch with exactly 8 LAN ports",
+        "po_text": "Network switch with 8 Ethernet ports",
+        "expected_status": "Acceptable",
+        "predicted_status": "Acceptable",
+        "status_correct": true,
+        "expected_issue": "Requirement satisfied",
+        "predicted_issue": "Requirement satisfied",
+        "issue_correct": true
+      },
+      {
+        "case": 13,
+        "pr_text": "Network switch with exactly 8 LAN ports",
+        "po_text": "Network switch with 16 Ethernet ports",
+        "expected_status": "Needs Recanvass",
+        "predicted_status": "Needs Recanvass",
+        "status_correct": true,
+        "expected_issue": "Exact or range mismatch",
+        "predicted_issue": "Exact or range mismatch",
+        "issue_correct": true
+      },
+      {
+        "case": 14,
+        "pr_text": "Display size between 14 and 16 inches",
+        "po_text": "Display size is 15.6 inches",
+        "expected_status": "Acceptable",
+        "predicted_status": "Acceptable",
+        "status_correct": true,
+        "expected_issue": "Requirement satisfied",
+        "predicted_issue": "Requirement satisfied",
+        "issue_correct": true
+      },
+      {
+        "case": 15,
+        "pr_text": "Display size between 14 and 16 inches",
+        "po_text": "Display size is 17 inches",
+        "expected_status": "Needs Recanvass",
+        "predicted_status": "Needs Recanvass",
+        "status_correct": true,
+        "expected_issue": "Exact or range mismatch",
+        "predicted_issue": "Exact or range mismatch",
+        "issue_correct": true
+      },
+      {
+        "case": 16,
+        "pr_text": "Office equipment with at least 2 years warranty",
+        "po_text": "Warranty period is 36 months",
+        "expected_status": "Acceptable",
+        "predicted_status": "Acceptable",
+        "status_correct": true,
+        "expected_issue": "Requirement satisfied",
+        "predicted_issue": "Requirement satisfied",
+        "issue_correct": true
+      },
+      {
+        "case": 17,
+        "pr_text": "Office equipment with at least 2 years warranty",
+        "po_text": "Warranty period is 12 months",
+        "expected_status": "Needs Recanvass",
+        "predicted_status": "Needs Recanvass",
+        "status_correct": true,
+        "expected_issue": "Below minimum",
+        "predicted_issue": "Below minimum",
+        "issue_correct": true
+      },
+      {
+        "case": 18,
+        "pr_text": "Bond paper; exact quantity 10 reams",
+        "po_text": "Bond paper; offered quantity 10 reams",
+        "expected_status": "Acceptable",
+        "predicted_status": "Acceptable",
+        "status_correct": true,
+        "expected_issue": "Requirement satisfied",
+        "predicted_issue": "Requirement satisfied",
+        "issue_correct": true
+      },
+      {
+        "case": 19,
+        "pr_text": "Bond paper; exact quantity 10 reams",
+        "po_text": "Bond paper; offered quantity 5 reams",
+        "expected_status": "Needs Recanvass",
+        "predicted_status": "Needs Recanvass",
+        "status_correct": true,
+        "expected_issue": "Quantity or unit mismatch",
+        "predicted_issue": "Quantity or unit mismatch",
+        "issue_correct": true
+      },
+      {
+        "case": 20,
+        "pr_text": "Required item: printer toner cartridge",
+        "po_text": "Offered item: office chair",
+        "expected_status": "Reject",
+        "predicted_status": "Reject",
+        "status_correct": true,
+        "expected_issue": "Different item",
+        "predicted_issue": "Different item",
+        "issue_correct": true
+      },
+      {
+        "case": 21,
+        "pr_text": "Required item: water pump",
+        "po_text": "No corresponding offered item was provided",
+        "expected_status": "Reject",
+        "predicted_status": "Reject",
+        "status_correct": true,
+        "expected_issue": "Missing item",
+        "predicted_issue": "Missing item",
+        "issue_correct": true
+      }
+    ]
+  },
+  "package_versions": {
+    "numpy": "2.0.2",
+    "pandas": "2.2.2",
+    "scipy": "1.18.0",
+    "gensim": "4.4.0",
+    "scikit-learn": "1.8.0",
+    "joblib": "1.5.3",
+    "transformers": "4.57.6"
+  }
+}

@@ -1,0 +1,22 @@
+case,pr_text,po_text,expected_status,predicted_status,status_correct,expected_issue,predicted_issue,issue_correct
+1,Laptop with at least 8 GB RAM,Laptop with 16 GB system memory,Acceptable,Acceptable,True,Requirement satisfied,Requirement satisfied,True
+2,Laptop with minimum 8 GB memory,Laptop with 4 GB RAM,Needs Recanvass,Needs Recanvass,True,Below minimum,Below minimum,True
+3,Laptop with minimum 12 GB installed memory,Laptop with 24 GB RAM,Acceptable,Acceptable,True,Requirement satisfied,Requirement satisfied,True
+4,Laptop with minimum 12 GB installed memory,Laptop with 6 GB RAM,Needs Recanvass,Needs Recanvass,True,Below minimum,Below minimum,True
+5,Laptop with minimum 512 GB SSD,Laptop with 1 TB solid-state drive,Acceptable,Acceptable,True,Requirement satisfied,Requirement satisfied,True
+6,Laptop with minimum 512 GB SSD,Laptop with 512 GB storage,Needs Review,Needs Review,True,Missing or ambiguous information,Missing or ambiguous information,True
+7,Laptop with minimum 512 GB SSD,Laptop with 1 TB hard disk drive,Needs Recanvass,Needs Recanvass,True,Specification mismatch,Specification mismatch,True
+8,Equipment weight must not exceed 5 kg,Equipment weight is 3 kg,Acceptable,Acceptable,True,Requirement satisfied,Requirement satisfied,True
+9,Equipment weight must not exceed 5 kg,Equipment weight is 7000 g,Needs Recanvass,Needs Recanvass,True,Above maximum,Above maximum,True
+10,Power consumption must not exceed 100 watts,Power draw is 75 watts,Acceptable,Acceptable,True,Requirement satisfied,Requirement satisfied,True
+11,Power consumption must not exceed 100 watts,Power draw is 150 watts,Needs Recanvass,Needs Recanvass,True,Above maximum,Above maximum,True
+12,Network switch with exactly 8 LAN ports,Network switch with 8 Ethernet ports,Acceptable,Acceptable,True,Requirement satisfied,Requirement satisfied,True
+13,Network switch with exactly 8 LAN ports,Network switch with 16 Ethernet ports,Needs Recanvass,Needs Recanvass,True,Exact or range mismatch,Exact or range mismatch,True
+14,Display size between 14 and 16 inches,Display size is 15.6 inches,Acceptable,Acceptable,True,Requirement satisfied,Requirement satisfied,True
+15,Display size between 14 and 16 inches,Display size is 17 inches,Needs Recanvass,Needs Recanvass,True,Exact or range mismatch,Exact or range mismatch,True
+16,Office equipment with at least 2 years warranty,Warranty period is 36 months,Acceptable,Acceptable,True,Requirement satisfied,Requirement satisfied,True
+17,Office equipment with at least 2 years warranty,Warranty period is 12 months,Needs Recanvass,Needs Recanvass,True,Below minimum,Below minimum,True
+18,Bond paper; exact quantity 10 reams,Bond paper; offered quantity 10 reams,Acceptable,Acceptable,True,Requirement satisfied,Requirement satisfied,True
+19,Bond paper; exact quantity 10 reams,Bond paper; offered quantity 5 reams,Needs Recanvass,Needs Recanvass,True,Quantity or unit mismatch,Quantity or unit mismatch,True
+20,Required item: printer toner cartridge,Offered item: office chair,Reject,Reject,True,Different item,Different item,True
+21,Required item: water pump,No corresponding offered item was provided,Reject,Reject,True,Missing item,Missing item,True
