@@ -1,96 +1,79 @@
-\# Project instructions
+# Project instructions
 
-
-
-\## Overview
+## Overview
 
 This project is the Municipality of Asuncion Supply and Property
 
 Management System.
 
-
-
 It uses Python, Flask, SQLite, HTML templates, Excel data,
 
 OCR, and FastText with Logistic Regression classifiers.
 
+## Project structure
 
+- capstone/app.py: application routes and procurement workflow.
 
-\## Project structure
+- capstone/templates/: HTML pages.
 
-\- capstone/app.py: application routes and procurement workflow.
+- capstone/static/: interface styling.
 
-\- capstone/templates/: HTML pages.
+- capstone/instance/psms.db: application database.
 
-\- capstone/static/: interface styling.
+- capstone/aoq_flexible.py: quotation document processing.
 
-\- capstone/instance/psms.db: application database.
+- capstone/inventory_dataset.py: inventory dataset handling.
 
-\- capstone/aoq\_flexible.py: quotation document processing.
+- capstone/fasttext_nlp_runtime.py: NLP model loading and prediction.
 
-\- capstone/inventory\_dataset.py: inventory dataset handling.
-
-\- capstone/fasttext\_nlp\_runtime.py: NLP model loading and prediction.
-
-\- capstone/model/fasttext\_nlp/: active NLP model assets.
-
-
+- capstone/model/fasttext_nlp/: active NLP model assets.
 
 Confirm these paths against the current checkout before making changes.
 
-
-
-\## Workflow
+## Workflow
 
 PPMP -> APP -> PR -> AOQ -> PO -> NLP verification
 
-\-> IAR/AIR -> Inventory -> RIS/ICS.
-
-
+-> IAR/AIR -> Inventory -> RIS/ICS.
 
 Preserve these rules:
 
-\- Create PRs only from approved APP records.
+- Create PRs only from approved APP records.
 
-\- Require exactly one winning supplier before saving an AOQ.
+- Require exactly one winning supplier before saving an AOQ.
 
-\- Generate POs from the approved AOQ winning offer.
+- Generate POs from the approved AOQ winning offer.
 
-\- Allow PO approval before NLP verification.
+- Allow PO approval before NLP verification.
 
-\- Require an eligible approved NLP result before IAR processing.
+- Require an eligible approved NLP result before IAR processing.
 
-\- Add accepted items to inventory when IAR is approved.
+- Add accepted items to inventory when IAR is approved.
 
-\- Deduct issued quantities only once when RIS/ICS is approved.
+- Deduct issued quantities only once when RIS/ICS is approved.
 
+## Development
 
+- Use the demo branch for this assignment.
 
-\## Development
+- Preserve existing user changes.
 
-\- Use the demo branch for this assignment.
+- Keep changes focused on the requested task.
 
-\- Preserve existing user changes.
+- Do not edit generated __pycache__ or .pyc files.
 
-\- Keep changes focused on the requested task.
+- Use a temporary database for tests.
 
-\- Do not edit generated \_\_pycache\_\_ or .pyc files.
+- Do not overwrite the existing database or trained models
 
-\- Use a temporary database for tests.
+  without explicit authorization.
 
-\- Do not overwrite the existing database or trained models
+## Validation
 
-&#x20; without explicit authorization.
+- Inspect SYSTEM_SMOKE_TEST.py before running workflow tests.
 
+- Run relevant checks after code changes.
 
+- Report which checks passed and which were not run.
 
-\## Validation
-
-\- Inspect SYSTEM\_SMOKE\_TEST.py before running workflow tests.
-
-\- Run relevant checks after code changes.
-
-\- Report which checks passed and which were not run.
-
-\- Model files being present does not prove predictions work.
-
+- Model files being present does not prove predictions work.
